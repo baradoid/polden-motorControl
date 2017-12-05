@@ -23,6 +23,7 @@
 //#include "sonoffmanager.h"
 
 //#include <qwt_plot_curve.h>
+#include "cpowermanager.h"
 
 #include "stand.h"
 namespace Ui {
@@ -80,7 +81,7 @@ private slots:
     void on_lineEditMotorCount_editingFinished();    
 
     void fpgaCtrlTermState(int, bool);
-    void handleFpgaCtrlErrorOccured(const QString&);
+    void handleErrorOccured(const QString&);
     void handleStandStateChanged(TStandState);
 
     void on_checkBoxDirInverse_clicked();
@@ -97,19 +98,8 @@ private slots:
 
     void moveUp(int);
     void moveDown(int);
-    void on_pushButtonU1_clicked();
 
-    void on_pushButtonD1_clicked();
-
-    void on_pushButtonU2_clicked();
-
-    void on_pushButtonD2_clicked();
-
-    void on_pushButtonU3_clicked();
-
-    void on_pushButtonD3_clicked();
-
-
+    void powerStatusChanged(bool ACLinePresent, int BatteryLifePercent, int BatteryLifeTime, char BatteryFlag);
 
 private:
     //quint32 motorCount;
@@ -201,6 +191,7 @@ private:
     FpgaControl fpgaCtrl;
     LeadshineDebugPort lsDebugPort;
     //SonoffManager *sonoffManager;
+    CPowerManager powerManager;
 };
 
 

@@ -34,7 +34,8 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     uartthread.cpp \
     fpgacontrol.cpp \
-    leadshinedebugport.cpp
+    leadshinedebugport.cpp \
+    cpowermanager.cpp
 
 HEADERS  += mainwindow.h \
     UartThread \
@@ -42,7 +43,8 @@ HEADERS  += mainwindow.h \
     uartthread.h \
     stand.h \
     fpgacontrol.h \
-    leadshinedebugport.h
+    leadshinedebugport.h \
+    cpowermanager.h
 
 FORMS    += mainwindow.ui
 

@@ -390,7 +390,7 @@
           <x>760</x>
           <y>140</y>
           <width>120</width>
-          <height>80</height>
+          <height>71</height>
          </rect>
         </property>
         <property name="title">
@@ -407,6 +407,35 @@
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_10">
+        <property name="geometry">
+         <rect>
+          <x>760</x>
+          <y>220</y>
+          <width>120</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Статус эл.сети</string>
+        </property>
+        <widget class="QLineEdit" name="lineEditPowerState">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>101</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
         </widget>
        </widget>
@@ -1042,48 +1071,6 @@
         <widget class="QPushButton" name="pushButtonTest2">
          <property name="text">
           <string>test2</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonU1">
-         <property name="text">
-          <string>u1</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonD1">
-         <property name="text">
-          <string>d1</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonU2">
-         <property name="text">
-          <string>u2</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonD2">
-         <property name="text">
-          <string>d2</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonU3">
-         <property name="text">
-          <string>u3</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonD3">
-         <property name="text">
-          <string>d3</string>
          </property>
         </widget>
        </item>

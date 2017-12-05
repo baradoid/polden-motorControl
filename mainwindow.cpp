@@ -171,7 +171,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&fpgaCtrl, SIGNAL(termStateChanged(int,bool)),
             this, SLOT(fpgaCtrlTermState(int, bool)));
     connect(&fpgaCtrl, SIGNAL(errorOccured(const QString&)),
-            this, SLOT(handleFpgaCtrlErrorOccured(const QString&)));
+            this, SLOT(handleErrorOccured(const QString&)));
     connect(&fpgaCtrl, SIGNAL(standStateChanged(TStandState)),
             this, SLOT(handleStandStateChanged(TStandState)));
 
@@ -185,11 +185,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //sonoffManager = new SonoffManager(this, ui->tableWidgetSonOffDevices);
     //sonoffManager->setAPserverParams(sonoffApSSID, sonoffApKey, sonoffServIp);
-
-
-
-
-
 
 
     connect(&lsDebugPort, SIGNAL(driverOk(int)), this, SLOT(handleDriverOk(int)));
@@ -231,6 +226,11 @@ MainWindow::MainWindow(QWidget *parent) :
             break;
         }
     }
+
+    connect(&powerManager, SIGNAL(powerStatusChanged(bool,int, int, char)),
+            this, SLOT(powerStatusChanged(bool,int, int, char)));
+    connect(&powerManager, SIGNAL(errorOccured(QString)),
+            this, SLOT(handleErrorOccured(QString)));
 }
 
 void MainWindow::createPlot(QString name)
@@ -355,7 +355,7 @@ void MainWindow::fpgaCtrlTermState(int id, bool bEna)
         termCheckBoxList[id]->setChecked(bEna);
     }
 }
-void MainWindow::handleFpgaCtrlErrorOccured(const QString &errStr)
+void MainWindow::handleErrorOccured(const QString &errStr)
 {
     QString showStr = QString("%1> %2").arg(QTime::currentTime().toString("hh:mm:ss")).arg(errStr);
     ui->plainTextEdit->appendPlainText(showStr);
@@ -687,6 +687,12 @@ void MainWindow::handleReadPendingDatagrams()
                     postUDPMessage("drivers error. Skip pos dgrm.");
                     continue;
                 }
+            }
+            if(fpgaCtrl.state() == standStateInitiating){
+                postUDPMessage("send pos msg while in initiating state! turn off UDP server");
+                udpServerClose();
+                continue;
+
             }
             QStringList list1 = dataStr.split("\r\n", QString::SkipEmptyParts);
             //qDebug()<<dataStr;
@@ -1426,6 +1432,20 @@ void MainWindow::createMainInterface()
         vblo->addWidget(le, 0, Qt::AlignHCenter);
         debPortStatusMainLeList.append(le);
 
+        QPushButton *pb = new QPushButton(wdg);
+        pb->setMaximumWidth(40);
+        pb->setText("↑");
+        connect(pb, &QPushButton::pressed,
+                [this, i](){ moveUp(i); /*qDebug() <<"up" << i;*/});
+        vblo->addWidget(pb);
+
+        pb = new QPushButton(wdg);
+        pb->setMaximumWidth(40);
+        pb->setText("↓");
+        connect(pb, &QPushButton::pressed,
+                [this, i](){ moveDown(i); /*qDebug() <<"down" << i;*/});
+        vblo->addWidget(pb);
+
         wdg->setLayout(vblo);
         lo->addWidget(wdg);
         //hblo->addStretch();
@@ -1728,36 +1748,6 @@ void MainWindow::moveDown(int id)
     }
 }
 
-void MainWindow::on_pushButtonU1_clicked()
-{
-    moveUp(0);
-}
-
-void MainWindow::on_pushButtonD1_clicked()
-{
-    moveDown(0);
-}
-
-void MainWindow::on_pushButtonU2_clicked()
-{
-    moveUp(1);
-}
-
-void MainWindow::on_pushButtonD2_clicked()
-{
-    moveDown(1);
-}
-
-void MainWindow::on_pushButtonU3_clicked()
-{
-    moveUp(2);
-}
-
-void MainWindow::on_pushButtonD3_clicked()
-{
-    moveDown(2);
-}
-
 void MainWindow::handleStandStateChanged(TStandState ss)
 {
     QString msg="standState:";
@@ -1784,11 +1774,40 @@ void MainWindow::handleStandStateChanged(TStandState ss)
 
 void MainWindow::postMessage(QString str)
 {
-
+    QString showStr = QString("%1> %2").arg(QTime::currentTime().toString("hh:mm:ss:zzz")).arg(str);
+    ui->plainTextEdit->appendPlainText(showStr);
 }
 
 void MainWindow::postUDPMessage(QString str)
 {
     QString showStr = QString("%1> %2").arg(QTime::currentTime().toString("hh:mm:ss:zzz")).arg(str);
     ui->plainTextUDP->appendPlainText(showStr);
+}
+
+void MainWindow::powerStatusChanged(bool ACLinePresent, int BatteryLifePercent, int BatteryLifeTime, char BatteryFlag)
+{
+    QString msg;
+    msg.sprintf("ACLinePresent %s, BatteryLifePercent %x, BatteryFlag 0x%x",
+                ACLinePresent? "true":"false", BatteryLifePercent, BatteryFlag);
+//    qDebug() << "ACLinePresent" << ACLinePresent << "BatteryLifePercent" << BatteryLifePercent
+//             << "BatteryFlag" << BatteryFlag;
+//    qDebug() << qPrintable(msg);
+    postMessage(msg);
+
+    QString buttonText;
+    if(ACLinePresent){
+        if((BatteryLifePercent>=0) && (BatteryLifePercent<=100))
+            buttonText.sprintf("вкл (%d%%)", BatteryLifePercent);
+        else
+            buttonText.sprintf("вкл");
+        ui->lineEditPowerState->setText(buttonText);
+        ui->lineEditPowerState->setPalette(*paletteGreen);
+    }
+    else{
+        buttonText.sprintf("выкл (%d%%, %d m)", BatteryLifePercent, BatteryLifeTime/60);
+        ui->lineEditPowerState->setText(buttonText);
+        ui->lineEditPowerState->setPalette(*paletteRed);
+
+    }
+
 }

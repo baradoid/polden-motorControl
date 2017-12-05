@@ -81,6 +81,8 @@ public:
     QLineEdit *lineEditDriversState;
     QGroupBox *groupBox_9;
     QLineEdit *lineEditStandState;
+    QGroupBox *groupBox_10;
+    QLineEdit *lineEditPowerState;
     QWidget *tabSettings;
     QGroupBox *groupBox_5;
     QLabel *label_8;
@@ -139,12 +141,6 @@ public:
     QPushButton *pushButtonTest;
     QPushButton *pushButtonTest1;
     QPushButton *pushButtonTest2;
-    QPushButton *pushButtonU1;
-    QPushButton *pushButtonD1;
-    QPushButton *pushButtonU2;
-    QPushButton *pushButtonD2;
-    QPushButton *pushButtonU3;
-    QPushButton *pushButtonD3;
     QWidget *widget_29;
     QHBoxLayout *horizontalLayout_20;
     QPushButton *pushButtonPosReset;
@@ -382,11 +378,19 @@ public:
         lineEditDriversState->setReadOnly(true);
         groupBox_9 = new QGroupBox(tabMainStat);
         groupBox_9->setObjectName(QStringLiteral("groupBox_9"));
-        groupBox_9->setGeometry(QRect(760, 140, 120, 80));
+        groupBox_9->setGeometry(QRect(760, 140, 120, 71));
         lineEditStandState = new QLineEdit(groupBox_9);
         lineEditStandState->setObjectName(QStringLiteral("lineEditStandState"));
         lineEditStandState->setGeometry(QRect(10, 30, 91, 20));
         lineEditStandState->setAlignment(Qt::AlignCenter);
+        groupBox_10 = new QGroupBox(tabMainStat);
+        groupBox_10->setObjectName(QStringLiteral("groupBox_10"));
+        groupBox_10->setGeometry(QRect(760, 220, 120, 51));
+        lineEditPowerState = new QLineEdit(groupBox_10);
+        lineEditPowerState->setObjectName(QStringLiteral("lineEditPowerState"));
+        lineEditPowerState->setGeometry(QRect(10, 20, 101, 20));
+        lineEditPowerState->setAlignment(Qt::AlignCenter);
+        lineEditPowerState->setReadOnly(true);
         tabWidget->addTab(tabMainStat, QString());
         tabSettings = new QWidget();
         tabSettings->setObjectName(QStringLiteral("tabSettings"));
@@ -635,36 +639,6 @@ public:
 
         horizontalLayout_4->addWidget(pushButtonTest2);
 
-        pushButtonU1 = new QPushButton(widget_6);
-        pushButtonU1->setObjectName(QStringLiteral("pushButtonU1"));
-
-        horizontalLayout_4->addWidget(pushButtonU1);
-
-        pushButtonD1 = new QPushButton(widget_6);
-        pushButtonD1->setObjectName(QStringLiteral("pushButtonD1"));
-
-        horizontalLayout_4->addWidget(pushButtonD1);
-
-        pushButtonU2 = new QPushButton(widget_6);
-        pushButtonU2->setObjectName(QStringLiteral("pushButtonU2"));
-
-        horizontalLayout_4->addWidget(pushButtonU2);
-
-        pushButtonD2 = new QPushButton(widget_6);
-        pushButtonD2->setObjectName(QStringLiteral("pushButtonD2"));
-
-        horizontalLayout_4->addWidget(pushButtonD2);
-
-        pushButtonU3 = new QPushButton(widget_6);
-        pushButtonU3->setObjectName(QStringLiteral("pushButtonU3"));
-
-        horizontalLayout_4->addWidget(pushButtonU3);
-
-        pushButtonD3 = new QPushButton(widget_6);
-        pushButtonD3->setObjectName(QStringLiteral("pushButtonD3"));
-
-        horizontalLayout_4->addWidget(pushButtonD3);
-
 
         verticalLayout_2->addWidget(widget_6);
 
@@ -776,6 +750,7 @@ public:
         checkBoxSliderPosCtrl->setText(QApplication::translate("MainWindow", "sliderPosCtrl", Q_NULLPTR));
         groupBox_3->setTitle(QApplication::translate("MainWindow", "\320\241\320\276\321\201\321\202\320\276\321\217\320\275\320\270\320\265 \320\264\321\200\320\260\320\271\320\262\320\265\321\200\320\276\320\262", Q_NULLPTR));
         groupBox_9->setTitle(QApplication::translate("MainWindow", "\320\241\320\276\321\201\321\202\320\276\321\217\320\275\320\270\320\265", Q_NULLPTR));
+        groupBox_10->setTitle(QApplication::translate("MainWindow", "\320\241\321\202\320\260\321\202\321\203\321\201 \321\215\320\273.\321\201\320\265\321\202\320\270", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabMainStat), QApplication::translate("MainWindow", "mainStat", Q_NULLPTR));
         groupBox_5->setTitle(QApplication::translate("MainWindow", "\320\234\320\265\321\205\320\260\320\275\320\270\320\272\320\260", Q_NULLPTR));
         label_8->setText(QApplication::translate("MainWindow", "\320\270\320\274\320\277/\320\276\320\261", Q_NULLPTR));
@@ -830,12 +805,6 @@ public:
         pushButtonTest->setText(QApplication::translate("MainWindow", "test", Q_NULLPTR));
         pushButtonTest1->setText(QApplication::translate("MainWindow", "test1", Q_NULLPTR));
         pushButtonTest2->setText(QApplication::translate("MainWindow", "test2", Q_NULLPTR));
-        pushButtonU1->setText(QApplication::translate("MainWindow", "u1", Q_NULLPTR));
-        pushButtonD1->setText(QApplication::translate("MainWindow", "d1", Q_NULLPTR));
-        pushButtonU2->setText(QApplication::translate("MainWindow", "u2", Q_NULLPTR));
-        pushButtonD2->setText(QApplication::translate("MainWindow", "d2", Q_NULLPTR));
-        pushButtonU3->setText(QApplication::translate("MainWindow", "u3", Q_NULLPTR));
-        pushButtonD3->setText(QApplication::translate("MainWindow", "d3", Q_NULLPTR));
         pushButtonPosReset->setText(QApplication::translate("MainWindow", "pos reset", Q_NULLPTR));
         pushBUttonToIdle->setText(QApplication::translate("MainWindow", "to idle", Q_NULLPTR));
         pushButtonClear->setText(QApplication::translate("MainWindow", "clear queue", Q_NULLPTR));
