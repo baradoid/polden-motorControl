@@ -1053,27 +1053,6 @@
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonTest">
-         <property name="text">
-          <string>test</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonTest1">
-         <property name="text">
-          <string>test1</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonTest2">
-         <property name="text">
-          <string>test2</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
     </item>

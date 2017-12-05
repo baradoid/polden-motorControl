@@ -138,9 +138,6 @@ public:
     QPushButton *pushMoveUp;
     QPushButton *goToTerm;
     QPushButton *pushButtonGoZero;
-    QPushButton *pushButtonTest;
-    QPushButton *pushButtonTest1;
-    QPushButton *pushButtonTest2;
     QWidget *widget_29;
     QHBoxLayout *horizontalLayout_20;
     QPushButton *pushButtonPosReset;
@@ -624,21 +621,6 @@ public:
 
         horizontalLayout_4->addWidget(pushButtonGoZero);
 
-        pushButtonTest = new QPushButton(widget_6);
-        pushButtonTest->setObjectName(QStringLiteral("pushButtonTest"));
-
-        horizontalLayout_4->addWidget(pushButtonTest);
-
-        pushButtonTest1 = new QPushButton(widget_6);
-        pushButtonTest1->setObjectName(QStringLiteral("pushButtonTest1"));
-
-        horizontalLayout_4->addWidget(pushButtonTest1);
-
-        pushButtonTest2 = new QPushButton(widget_6);
-        pushButtonTest2->setObjectName(QStringLiteral("pushButtonTest2"));
-
-        horizontalLayout_4->addWidget(pushButtonTest2);
-
 
         verticalLayout_2->addWidget(widget_6);
 
@@ -802,9 +784,6 @@ public:
         pushMoveUp->setText(QApplication::translate("MainWindow", "moveUp", Q_NULLPTR));
         goToTerm->setText(QApplication::translate("MainWindow", "go term", Q_NULLPTR));
         pushButtonGoZero->setText(QApplication::translate("MainWindow", "go zero", Q_NULLPTR));
-        pushButtonTest->setText(QApplication::translate("MainWindow", "test", Q_NULLPTR));
-        pushButtonTest1->setText(QApplication::translate("MainWindow", "test1", Q_NULLPTR));
-        pushButtonTest2->setText(QApplication::translate("MainWindow", "test2", Q_NULLPTR));
         pushButtonPosReset->setText(QApplication::translate("MainWindow", "pos reset", Q_NULLPTR));
         pushBUttonToIdle->setText(QApplication::translate("MainWindow", "to idle", Q_NULLPTR));
         pushButtonClear->setText(QApplication::translate("MainWindow", "clear queue", Q_NULLPTR));

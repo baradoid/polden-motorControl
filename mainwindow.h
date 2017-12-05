@@ -71,7 +71,9 @@ private slots:
     void on_pushButtonInitiate_clicked();
     void on_pushButtonGoZero_clicked();
 
-    void on_pushButtonTest_clicked();
+//    void on_pushButtonTest_clicked();
+//    void on_pushButtonTest1_clicked();
+//    void on_pushButtonTest2_clicked();
 
     void on_lineEdit_maxHeightMM_editingFinished();
     void on_lineEdit_MaxHeightImp_editingFinished();
@@ -86,9 +88,7 @@ private slots:
 
     void on_checkBoxDirInverse_clicked();
 
-    void on_pushButtonTest1_clicked();
 
-    void on_pushButtonTest2_clicked();
 
     //void on_pushButtonSonoffAPSet_clicked();
 

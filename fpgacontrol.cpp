@@ -77,6 +77,7 @@ void FpgaControl::setMotorStateIdle()
     }
 
     standState = standStateidle;
+    emit standStateChanged(standState);
 }
 
 //void FpgaControl::setMotorStateGoDown()
@@ -565,6 +566,26 @@ void FpgaControl::handleReadyRead()
             break;
         }
     }
+
+//    for(int id=0; id<motorCount; id++){
+//        if(bTermState[id] != bEna){
+//            bTermState[id] = bEna;
+//            emit(termStateChanged(id, bEna));
+//        }
+
+//        if(mtState[id] == MT_INIT_GoDOWN){
+//            if(bEna == true){
+//                motorAbsolutePosCur[id] = 0;
+//            }
+//            else{
+//                if(getCmdListLength(id) == 0){
+//                    int pos = getMotorAbsPosImp(id);
+//                    pos -=400;
+//                    addMotorCmd(id, pos, 100);
+//                }
+//            }
+//        }
+//    }
 
 
     if(standState == standStateInitiating){
