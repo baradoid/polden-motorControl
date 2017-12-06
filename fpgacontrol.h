@@ -10,6 +10,7 @@
 
 typedef enum{
     standStateInitiating,
+    standStateGoTerm,
     standStateError,
     standStateidle
 } TStandState;
@@ -31,6 +32,7 @@ public:
     void setMotorStateIdle();
     //void setMotorStateGoDown();
     void setMotorStateInitiate();
+    void setMotorStateParking();
     void setFpgaFreq(quint32);
     void setDirInverse(bool e){bDirInvers=e;}
     qint32 getMotorAbsPosImp(int i) { return motorAbsolutePosCur[i];}

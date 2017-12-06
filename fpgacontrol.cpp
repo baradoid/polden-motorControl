@@ -95,6 +95,15 @@ void FpgaControl::setMotorStateInitiate()
     }
 }
 
+void FpgaControl::setMotorStateParking()
+{
+    standState = standStateGoTerm;
+    emit standStateChanged(standState);
+    for(int i=0; i<MOTOR_CNT; i++){
+        mtState[i] = MT_INIT_GoDOWN;
+    }
+}
+
 void FpgaControl::setFpgaFreq(quint32 ff)
 {
     fpgaFreq = ff;
@@ -632,6 +641,16 @@ void FpgaControl::handleReadyRead()
                 emit standStateChanged(standState);
             }
         }
+    }
+    else if(standState == standStateGoTerm){
+        bool bAllDownPos = true;
+        bool bAllInitGoDownState = true;
+
+        for(int id=0; id<motorCount; id++){
+            bAllDownPos = (bAllDownPos&&bTermState[id] && (getCmdListLength(id) == 0));
+            bAllInitGoDownState = (bAllInitGoDownState && (mtState[id] == MT_INIT_GoDOWN));
+        }
+
     }
 
 //    for(int id=0; id<motorCount; id++){

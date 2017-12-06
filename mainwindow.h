@@ -101,6 +101,8 @@ private slots:
 
     void powerStatusChanged(bool ACLinePresent, int BatteryLifePercent, int BatteryLifeTime, char BatteryFlag);
 
+    void on_pushButtonParking_clicked();
+
 private:
     //quint32 motorCount;
 

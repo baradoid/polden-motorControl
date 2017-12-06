@@ -929,6 +929,15 @@ void MainWindow::on_pushButtonInitiate_clicked()
     fpgaCtrl.setMotorStateInitiate();
     //udpServerClose();
     fpgaCtrl.clearCmdList();
+    udpServerOpen();
+}
+
+void MainWindow::on_pushButtonParking_clicked()
+{
+    udpServerClose();
+    fpgaCtrl.clearCmdList();
+    fpgaCtrl.setMotorStateParking();
+
 }
 
 
@@ -1763,6 +1772,11 @@ void MainWindow::handleStandStateChanged(TStandState ss)
         ui->lineEditStandState->setPalette(*paletteGrey);
         msg += "initiate";
         break;
+    case standStateGoTerm:
+        ui->lineEditStandState->setText("parking");
+        ui->lineEditStandState->setPalette(*paletteGrey);
+        msg += "parking";
+        break;
     case standStateError:
         ui->lineEditStandState->setText("error");
         ui->lineEditStandState->setPalette(*paletteRed);
@@ -1812,3 +1826,4 @@ void MainWindow::powerStatusChanged(bool ACLinePresent, int BatteryLifePercent, 
     }
 
 }
+

@@ -131,7 +131,10 @@ public:
     QWidget *widgetComPorts;
     QWidget *widget_27;
     QHBoxLayout *horizontalLayout_18;
+    QSpacerItem *horizontalSpacer_2;
+    QPushButton *pushButtonParking;
     QPushButton *pushButtonInitiate;
+    QSpacerItem *horizontalSpacer_3;
     QWidget *widget_6;
     QHBoxLayout *horizontalLayout_4;
     QPushButton *pushMoveDown;
@@ -585,11 +588,27 @@ public:
         horizontalLayout_18->setSpacing(6);
         horizontalLayout_18->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_18->setObjectName(QStringLiteral("horizontalLayout_18"));
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_18->addItem(horizontalSpacer_2);
+
+        pushButtonParking = new QPushButton(widget_27);
+        pushButtonParking->setObjectName(QStringLiteral("pushButtonParking"));
+        pushButtonParking->setMinimumSize(QSize(150, 0));
+        pushButtonParking->setMaximumSize(QSize(200, 16777215));
+
+        horizontalLayout_18->addWidget(pushButtonParking);
+
         pushButtonInitiate = new QPushButton(widget_27);
         pushButtonInitiate->setObjectName(QStringLiteral("pushButtonInitiate"));
+        pushButtonInitiate->setMinimumSize(QSize(150, 0));
         pushButtonInitiate->setMaximumSize(QSize(200, 16777215));
 
         horizontalLayout_18->addWidget(pushButtonInitiate);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_18->addItem(horizontalSpacer_3);
 
 
         verticalLayout_2->addWidget(widget_27);
@@ -779,6 +798,7 @@ public:
         checkBoxDriversStateControl->setText(QApplication::translate("MainWindow", "\320\272\320\276\320\275\321\202\321\200\320\276\320\273\320\270\321\200\320\276\320\262\320\260\321\202\321\214 \320\276\321\210\320\270\320\261\320\272\320\270 \320\264\321\200\320\260\320\271\320\262\320\265\321\200\320\276\320\262", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabSettings), QApplication::translate("MainWindow", "settings", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabDebugPort), QApplication::translate("MainWindow", "debugPort", Q_NULLPTR));
+        pushButtonParking->setText(QApplication::translate("MainWindow", "\320\237\320\260\321\200\320\272\320\276\320\262\320\260\321\202\321\214", Q_NULLPTR));
         pushButtonInitiate->setText(QApplication::translate("MainWindow", "\320\230\320\275\320\270\321\206\320\270\320\260\320\273\320\270\320\267\320\270\321\200\320\276\320\262\320\260\321\202\321\214", Q_NULLPTR));
         pushMoveDown->setText(QApplication::translate("MainWindow", "moveDown", Q_NULLPTR));
         pushMoveUp->setText(QApplication::translate("MainWindow", "moveUp", Q_NULLPTR));
