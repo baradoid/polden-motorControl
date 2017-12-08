@@ -537,9 +537,9 @@ void MainWindow::parseCmdMultiMotorStr(QString cmdMultiMotorStr, quint32 udpDgRe
         QString vs = motorStrList[i];                
         quint32 convVal = vs.toInt();
         if(convVal > maxUDPVal)
-            ui->plainTextUDP->appendPlainText("!!! max UDP val error !!!");
+            postUDPMessage("!!! max UDP val error !!!");
         if( (i>9) || (i<0))
-            ui->plainTextUDP->appendPlainText("!!! motInd error !!!");
+            postUDPMessage("!!! motInd error !!!");
         quint32 newPos = maxHeightImpVal * (convVal/(float)maxUDPVal);
         //qDebug() << convVal << newPos;
         fpgaCtrl.addMotorCmd(i, newPos, udpDgRecvInterval);
@@ -628,8 +628,8 @@ void MainWindow::handleReadPendingDatagrams()
 //                dataProcess100msTimer.start();
 //            }
             //qDebug("start cmd");
-            //if(ui->checkBoxPrintUDPData->isChecked())
-                ui->plainTextUDP->appendPlainText("start cmd");
+            //if(ui->checkBoxPrintUDPData->isChecked())           
+            postUDPMessage("start cmd");
         }
         else if((dataStr == "init\r\n") || (dataStr == "init")){
             if(ui->checkBoxDriversStateControl->isChecked() &&
@@ -638,8 +638,7 @@ void MainWindow::handleReadPendingDatagrams()
                 continue;
             }
             else{
-                ui->plainTextUDP->appendPlainText("init cmd");
-                postUDPMessage("postUDPMessage("init from UDP off");");
+                postUDPMessage("init cmd");
             }
             //if(ui->checkBoxPrintUDPData->isChecked())
             if(ui->checkBoxUdpInitEnable->isChecked()){
