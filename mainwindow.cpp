@@ -639,13 +639,14 @@ void MainWindow::handleReadPendingDatagrams()
             }
             else{
                 ui->plainTextUDP->appendPlainText("init cmd");
+                postUDPMessage("postUDPMessage("init from UDP off");");
             }
             //if(ui->checkBoxPrintUDPData->isChecked())
             if(ui->checkBoxUdpInitEnable->isChecked()){
                 on_pushButtonInitiate_clicked();
             }
             else{
-                ui->plainTextUDP->appendPlainText("init from UDP off");
+                postUDPMessage("init from UDP off");
             }
         }
         else if(dataStr.compare("stop\r\n") == 0){            
@@ -689,11 +690,15 @@ void MainWindow::handleReadPendingDatagrams()
                     continue;
                 }
             }
-            if(fpgaCtrl.state() == standStateInitiating){
-                postUDPMessage("send pos msg while in initiating state! turn off UDP server");
-                udpServerClose();
+            if((fpgaCtrl.state() == standStateInitiating)  ){
+                postUDPMessage("send pos msg while in initiating state! skip packet");
+                //udpServerClose();
                 continue;
-
+            }
+            else if((fpgaCtrl.state() == standStateError)  ){
+                postUDPMessage("send pos msg while in error state! skip packet");
+                //udpServerClose();
+                continue;
             }
             QStringList list1 = dataStr.split("\r\n", QString::SkipEmptyParts);
             //qDebug()<<dataStr;

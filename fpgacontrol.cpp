@@ -531,7 +531,7 @@ void FpgaControl::handleReadyRead()
     if(bytesOnIter != 4){
         //qDebug() << "handleReadyRead !!! ERROR !!!" << dArr.length();
         QString msg = QString("handleReadyRead !!! ERROR !!! err %1").arg(dArr.length());
-        emit errorOccured(msg);
+        //emit errorOccured(msg);
     }
 
 //    int bytesToRecv = 4;
