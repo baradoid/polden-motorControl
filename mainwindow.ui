@@ -1091,13 +1091,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="goToTerm">
-         <property name="text">
-          <string>go term</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="pushButtonGoZero">
          <property name="text">
           <string>go zero</string>

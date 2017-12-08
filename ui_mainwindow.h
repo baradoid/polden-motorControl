@@ -139,7 +139,6 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QPushButton *pushMoveDown;
     QPushButton *pushMoveUp;
-    QPushButton *goToTerm;
     QPushButton *pushButtonGoZero;
     QWidget *widget_29;
     QHBoxLayout *horizontalLayout_20;
@@ -630,11 +629,6 @@ public:
 
         horizontalLayout_4->addWidget(pushMoveUp);
 
-        goToTerm = new QPushButton(widget_6);
-        goToTerm->setObjectName(QStringLiteral("goToTerm"));
-
-        horizontalLayout_4->addWidget(goToTerm);
-
         pushButtonGoZero = new QPushButton(widget_6);
         pushButtonGoZero->setObjectName(QStringLiteral("pushButtonGoZero"));
 
@@ -802,7 +796,6 @@ public:
         pushButtonInitiate->setText(QApplication::translate("MainWindow", "\320\230\320\275\320\270\321\206\320\270\320\260\320\273\320\270\320\267\320\270\321\200\320\276\320\262\320\260\321\202\321\214", Q_NULLPTR));
         pushMoveDown->setText(QApplication::translate("MainWindow", "moveDown", Q_NULLPTR));
         pushMoveUp->setText(QApplication::translate("MainWindow", "moveUp", Q_NULLPTR));
-        goToTerm->setText(QApplication::translate("MainWindow", "go term", Q_NULLPTR));
         pushButtonGoZero->setText(QApplication::translate("MainWindow", "go zero", Q_NULLPTR));
         pushButtonPosReset->setText(QApplication::translate("MainWindow", "pos reset", Q_NULLPTR));
         pushBUttonToIdle->setText(QApplication::translate("MainWindow", "to idle", Q_NULLPTR));
