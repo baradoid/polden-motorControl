@@ -76,7 +76,6 @@ public:
     QHBoxLayout *horizontalLayout_17;
     QLabel *label_6;
     QLineEdit *lineEditDataGramCnt;
-    QCheckBox *checkBoxSliderPosCtrl;
     QGroupBox *groupBox_3;
     QLineEdit *lineEditDriversState;
     QGroupBox *groupBox_9;
@@ -364,9 +363,6 @@ public:
 
         verticalLayout_3->addWidget(widget_26);
 
-        checkBoxSliderPosCtrl = new QCheckBox(tabMainStat);
-        checkBoxSliderPosCtrl->setObjectName(QStringLiteral("checkBoxSliderPosCtrl"));
-        checkBoxSliderPosCtrl->setGeometry(QRect(600, 280, 70, 17));
         groupBox_3 = new QGroupBox(tabMainStat);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
         groupBox_3->setGeometry(QRect(760, 30, 151, 71));
@@ -742,7 +738,6 @@ public:
         groupBox_4->setTitle(QApplication::translate("MainWindow", "UDP", Q_NULLPTR));
         label_7->setText(QApplication::translate("MainWindow", "state", Q_NULLPTR));
         label_6->setText(QApplication::translate("MainWindow", "\320\224\320\263\321\200\320\274", Q_NULLPTR));
-        checkBoxSliderPosCtrl->setText(QApplication::translate("MainWindow", "sliderPosCtrl", Q_NULLPTR));
         groupBox_3->setTitle(QApplication::translate("MainWindow", "\320\241\320\276\321\201\321\202\320\276\321\217\320\275\320\270\320\265 \320\264\321\200\320\260\320\271\320\262\320\265\321\200\320\276\320\262", Q_NULLPTR));
         groupBox_9->setTitle(QApplication::translate("MainWindow", "\320\241\320\276\321\201\321\202\320\276\321\217\320\275\320\270\320\265", Q_NULLPTR));
         groupBox_10->setTitle(QApplication::translate("MainWindow", "\320\241\321\202\320\260\321\202\321\203\321\201 \321\215\320\273.\321\201\320\265\321\202\320\270", Q_NULLPTR));

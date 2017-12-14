@@ -3,7 +3,8 @@
 
 CPowerManager::CPowerManager(QObject *parent) :
     QObject(parent),
-    lastACLineStatus(-1)
+    lastACLineStatus(-1),
+    AcLineStatus(false)
 {
 
     connect(&powerCheckTimer, SIGNAL(timeout()),
@@ -19,7 +20,7 @@ CPowerManager::CPowerManager(QObject *parent) :
 
 bool CPowerManager::isACLinePresent()
 {
-
+    return AcLineStatus;
 }
 
 void CPowerManager::handlePwrCheckTimer()
@@ -29,10 +30,11 @@ void CPowerManager::handlePwrCheckTimer()
     if(ret){
         if(memcmp(&lastSysPwrStat, &sysPwrStat, sizeof(SYSTEM_POWER_STATUS)) != 0){
             lastSysPwrStat = sysPwrStat;
+            AcLineStatus = (sysPwrStat.ACLineStatus != 0);
             //qDebug() << ret;
             //qDebug() << sysPwrStat.ACLineStatus << sysPwrStat.BatteryFlag << sysPwrStat.BatteryFullLifeTime;
             //qDebug() << sysPwrStat.BatteryLifePercent << sysPwrStat.BatteryLifeTime;
-            emit powerStatusChanged(sysPwrStat.ACLineStatus,
+            emit powerStatusChanged((sysPwrStat.ACLineStatus != 0),
                                     sysPwrStat.BatteryLifePercent,
                                     sysPwrStat.BatteryLifeTime,
                                     sysPwrStat.BatteryFlag);
@@ -40,7 +42,7 @@ void CPowerManager::handlePwrCheckTimer()
     }
     else{
         QString msg;
-        msg.sprintf("GetSystemPowerStatus fail with 0x%x", GetLastError());
+        msg.sprintf("GetSystemPowerStatus fail with 0x%lx", GetLastError());
         emit errorOccured(msg);
     }
 

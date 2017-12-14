@@ -654,8 +654,9 @@ void MainWindow::handleReadPendingDatagrams()
             //if(ui->checkBoxPrintUDPData->isChecked())   
                 postUDPMessage("stop cmd");
         }
-        else if(dataStr == "stat?"){
+        else if(dataStr.startsWith("stat?")){
             static int msgInd =0 ;
+
             QString replStr;
 
             switch(fpgaCtrl.state()){
@@ -668,6 +669,9 @@ void MainWindow::handleReadPendingDatagrams()
             case standStateInitiating:
                 replStr = "init";
                 break;
+            case standStateGoTerm:
+                replStr = "park";
+                break;
             default:
                 replStr = "err";
             }
@@ -677,6 +681,10 @@ void MainWindow::handleReadPendingDatagrams()
                 }
             }
 
+            QStringList statReqParts = dataStr.split(',');
+            if(statReqParts.length() > 1){
+                replStr += ("," + statReqParts[1]);
+            }
             //replStr += QString::number(msgInd++);
             //postUDPMessage(QString("%1 - stat? ->\"").arg(datagram.senderAddress().toString()) + replStr +"\"");
             udpSocket->writeDatagram(replStr.toLatin1(), datagram.senderAddress(), 8052);
@@ -1082,8 +1090,8 @@ void MainWindow::uiUpdateTimerSlot()
             int mmPerRot = ui->lineEdit_mmPerRot->text().toInt();
             int impPerRot = ui->lineEdit_ImpPerRot->text().toInt();
             int posMm = (fpgaCtrl.getMotorAbsPosImp(i)/(float)impPerRot)*mmPerRot;
-            if(ui->checkBoxSliderPosCtrl->isChecked()==false)
-                absPosSlider[i]->setValue(fpgaCtrl.getMotorAbsPosImp(i));
+//            if(ui->checkBoxSliderPosCtrl->isChecked()==false)
+//                absPosSlider[i]->setValue(fpgaCtrl.getMotorAbsPosImp(i));
             absPosLineEdit[i]->setText(QString::number(posMm));
             euqueLineEdit[i]->setText(QString::number(fpgaCtrl.getCmdListLength(i)));
 
@@ -1122,7 +1130,7 @@ void MainWindow::uiUpdateTimerSlot()
 
     }
     else if(tabName == "timeStat"){
-        int curMsec = QTime::currentTime().msecsSinceStartOfDay();
+        //int curMsec = QTime::currentTime().msecsSinceStartOfDay();
         for(int i=0; i<MOTOR_CNT; i++){
             if(fpgaCtrl.getCmdListLength(i) != 0){
                 int shift = 0;
@@ -1395,7 +1403,7 @@ void MainWindow::createMainInterface()
     //QHBoxLayout *hblo = new QHBoxLayout(mainWdg);
     //lo->addWidget(mainWdg);
     quint32 motorCount = ui->lineEditMotorCount->text().toInt();
-    for(int i=0; i<motorCount; i++){
+    for(quint32 i=0; i<motorCount; i++){
         QWidget *wdg = new QWidget(ui->groupBoxMain);
         QVBoxLayout *vblo = new QVBoxLayout(wdg);
 

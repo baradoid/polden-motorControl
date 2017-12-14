@@ -22,6 +22,7 @@ private slots:
 private:
     QTimer powerCheckTimer;
     char lastACLineStatus;
+    bool AcLineStatus;
 
     SYSTEM_POWER_STATUS lastSysPwrStat;
 };
