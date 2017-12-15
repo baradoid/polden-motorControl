@@ -1190,12 +1190,11 @@ void MainWindow::udpServerOpen()
 {
     if(udpSocket == NULL){
         udpSocket = new QUdpSocket(this);
-
-        connect(udpSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
-                this, SLOT(stateChanged(QAbstractSocket::SocketState)));
-        connect(udpSocket, SIGNAL(readyRead()),
-                this, SLOT(handleReadPendingDatagrams()));
     }
+    connect(udpSocket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
+            this, SLOT(stateChanged(QAbstractSocket::SocketState)));
+    connect(udpSocket, SIGNAL(readyRead()),
+            this, SLOT(handleReadPendingDatagrams()));
 
     if(udpSocket->state() != QAbstractSocket::BoundState){
         udpConnectionTime.restart();
