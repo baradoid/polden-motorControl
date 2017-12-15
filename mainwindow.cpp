@@ -242,9 +242,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->checkBoxLockSettings, &QCheckBox::clicked,
             [this](){
                         if(ui->checkBoxLockSettings->isChecked() == false){
+
                             QMessageBox::warning(this, tr("Motor-control"),
-                                                       tr("Изменение этих параметров может привести к физической поломке инсталляции.\n"
-                                                          "Вы уверены что хотите их изменить?"),
+                                                       tr(" <p align='center'>Изменение этих параметров может привести к физической поломке инсталляции.<br><br>\n"
+                                                          "Вы уверены что хотите их изменить?</p>"),
                                                           QMessageBox::Ok);
                         }
                         lockSettings(ui->checkBoxLockSettings->isChecked());
@@ -1897,3 +1898,9 @@ void MainWindow::lockSettings(bool bLock)
     ui->lineEditTermSeekRangeMM->setEnabled(bLock);
 }
 
+
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+    ui->checkBoxLockSettings->setChecked(true);
+    lockSettings(true);
+}

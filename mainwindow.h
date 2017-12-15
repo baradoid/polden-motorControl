@@ -105,6 +105,8 @@ private slots:
 
     void on_lineEditTermSeekRangeMM_editingFinished();
 
+    void on_tabWidget_currentChanged(int index);
+
 private:
     //quint32 motorCount;
 
