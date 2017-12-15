@@ -18,6 +18,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = motor-control
 TEMPLATE = app
 
+RC_ICONS = favicon.ico
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -49,5 +50,8 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui
 
 # include ( C:\Qwt-6.1.3\features\qwt.prf )
+
+RESOURCES += \
+    res.qrc
 
 

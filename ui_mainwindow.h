@@ -94,6 +94,8 @@ public:
     QLabel *label_11;
     QLabel *label_12;
     QLineEdit *lineEdit_vmax_mmsec;
+    QLabel *label_15;
+    QLineEdit *lineEditTermSeekRangeMM;
     QGroupBox *groupBox_6;
     QLabel *label_3;
     QLineEdit *lineEditMotorCount;
@@ -126,6 +128,7 @@ public:
     QCheckBox *term9;
     QCheckBox *term10;
     QCheckBox *checkBoxDriversStateControl;
+    QCheckBox *checkBoxLockSettings;
     QWidget *tabDebugPort;
     QWidget *widgetComPorts;
     QWidget *widget_27;
@@ -391,7 +394,7 @@ public:
         tabSettings->setObjectName(QStringLiteral("tabSettings"));
         groupBox_5 = new QGroupBox(tabSettings);
         groupBox_5->setObjectName(QStringLiteral("groupBox_5"));
-        groupBox_5->setGeometry(QRect(20, 20, 211, 171));
+        groupBox_5->setGeometry(QRect(20, 20, 211, 211));
         label_8 = new QLabel(groupBox_5);
         label_8->setObjectName(QStringLiteral("label_8"));
         label_8->setGeometry(QRect(10, 20, 47, 13));
@@ -427,6 +430,13 @@ public:
         lineEdit_vmax_mmsec->setObjectName(QStringLiteral("lineEdit_vmax_mmsec"));
         lineEdit_vmax_mmsec->setGeometry(QRect(110, 140, 81, 20));
         lineEdit_vmax_mmsec->setAlignment(Qt::AlignCenter);
+        label_15 = new QLabel(groupBox_5);
+        label_15->setObjectName(QStringLiteral("label_15"));
+        label_15->setGeometry(QRect(10, 160, 91, 31));
+        lineEditTermSeekRangeMM = new QLineEdit(groupBox_5);
+        lineEditTermSeekRangeMM->setObjectName(QStringLiteral("lineEditTermSeekRangeMM"));
+        lineEditTermSeekRangeMM->setGeometry(QRect(110, 170, 81, 20));
+        lineEditTermSeekRangeMM->setAlignment(Qt::AlignCenter);
         groupBox_6 = new QGroupBox(tabSettings);
         groupBox_6->setObjectName(QStringLiteral("groupBox_6"));
         groupBox_6->setGeometry(QRect(260, 20, 151, 121));
@@ -449,7 +459,7 @@ public:
         checkBoxInitOnStart->setGeometry(QRect(10, 90, 101, 17));
         groupBox_7 = new QGroupBox(tabSettings);
         groupBox_7->setObjectName(QStringLiteral("groupBox_7"));
-        groupBox_7->setGeometry(QRect(20, 200, 141, 111));
+        groupBox_7->setGeometry(QRect(480, 70, 141, 111));
         lineEditMinVal = new QLineEdit(groupBox_7);
         lineEditMinVal->setObjectName(QStringLiteral("lineEditMinVal"));
         lineEditMinVal->setGeometry(QRect(50, 20, 71, 20));
@@ -469,7 +479,7 @@ public:
         checkBoxPrintUDPData->setGeometry(QRect(20, 80, 61, 20));
         groupBox_8 = new QGroupBox(tabSettings);
         groupBox_8->setObjectName(QStringLiteral("groupBox_8"));
-        groupBox_8->setGeometry(QRect(170, 210, 151, 51));
+        groupBox_8->setGeometry(QRect(20, 240, 151, 51));
         label_13 = new QLabel(groupBox_8);
         label_13->setObjectName(QStringLiteral("label_13"));
         label_13->setGeometry(QRect(10, 20, 71, 16));
@@ -478,7 +488,7 @@ public:
         labelCompileTime->setGeometry(QRect(80, 20, 101, 16));
         groupBox = new QGroupBox(tabSettings);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(470, 150, 213, 141));
+        groupBox->setGeometry(QRect(330, 200, 213, 121));
         groupBox->setAlignment(Qt::AlignCenter);
         groupBox->setFlat(false);
         verticalLayout_4 = new QVBoxLayout(groupBox);
@@ -566,6 +576,9 @@ public:
         checkBoxDriversStateControl = new QCheckBox(tabSettings);
         checkBoxDriversStateControl->setObjectName(QStringLiteral("checkBoxDriversStateControl"));
         checkBoxDriversStateControl->setGeometry(QRect(440, 30, 211, 17));
+        checkBoxLockSettings = new QCheckBox(tabSettings);
+        checkBoxLockSettings->setObjectName(QStringLiteral("checkBoxLockSettings"));
+        checkBoxLockSettings->setGeometry(QRect(250, 150, 221, 17));
         tabWidget->addTab(tabSettings, QString());
         tabDebugPort = new QWidget();
         tabDebugPort->setObjectName(QStringLiteral("tabDebugPort"));
@@ -726,7 +739,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Motor-control", Q_NULLPTR));
         pushButtonComOpen->setText(QApplication::translate("MainWindow", "open", Q_NULLPTR));
         pushButton_refreshCom->setText(QApplication::translate("MainWindow", "refresh", Q_NULLPTR));
         pushButtonUdpOpenClose->setText(QApplication::translate("MainWindow", "UDP Open", Q_NULLPTR));
@@ -756,6 +769,10 @@ public:
         lineEdit_MaxHeightImp->setText(QApplication::translate("MainWindow", "200000", Q_NULLPTR));
         label_11->setText(QApplication::translate("MainWindow", "\320\274\320\260\320\272\321\201 \320\262\321\213\321\201\320\276\321\202\320\260, \320\270\320\274\320\277", Q_NULLPTR));
         label_12->setText(QApplication::translate("MainWindow", "Vmax, \320\274\320\274/\321\201", Q_NULLPTR));
+        label_15->setText(QApplication::translate("MainWindow", "\320\224\320\273\320\270\320\275\320\260 \321\202\320\265\321\201\321\202\320\276\320\262\320\276\320\263\320\276\n"
+"\320\277\321\200\320\276\321\205\320\276\320\264\320\260, \320\274\320\274", Q_NULLPTR));
+        lineEditTermSeekRangeMM->setInputMask(QApplication::translate("MainWindow", "99", Q_NULLPTR));
+        lineEditTermSeekRangeMM->setText(QApplication::translate("MainWindow", "20", Q_NULLPTR));
         groupBox_6->setTitle(QApplication::translate("MainWindow", "\320\255\320\221\320\243", Q_NULLPTR));
         label_3->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\273-\320\262\320\276 \320\274\320\276\321\202\320\276\321\200\320\276\320\262:", Q_NULLPTR));
         lineEditMotorCount->setInputMask(QApplication::translate("MainWindow", "90", Q_NULLPTR));
@@ -785,6 +802,7 @@ public:
         term9->setText(QApplication::translate("MainWindow", "9", Q_NULLPTR));
         term10->setText(QApplication::translate("MainWindow", "10", Q_NULLPTR));
         checkBoxDriversStateControl->setText(QApplication::translate("MainWindow", "\320\272\320\276\320\275\321\202\321\200\320\276\320\273\320\270\321\200\320\276\320\262\320\260\321\202\321\214 \320\276\321\210\320\270\320\261\320\272\320\270 \320\264\321\200\320\260\320\271\320\262\320\265\321\200\320\276\320\262", Q_NULLPTR));
+        checkBoxLockSettings->setText(QApplication::translate("MainWindow", "\320\221\320\273\320\276\320\272\320\270\321\200\320\276\320\262\320\272\320\260 \320\274\320\265\321\205\320\260\320\275\320\270\321\207\320\265\320\272\320\270\321\205 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\276\320\262", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabSettings), QApplication::translate("MainWindow", "settings", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabDebugPort), QApplication::translate("MainWindow", "debugPort", Q_NULLPTR));
         pushButtonParking->setText(QApplication::translate("MainWindow", "\320\237\320\260\321\200\320\272\320\276\320\262\320\260\321\202\321\214", Q_NULLPTR));

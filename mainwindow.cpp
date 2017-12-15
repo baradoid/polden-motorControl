@@ -10,7 +10,7 @@
 #include <QSettings>
 #include <QWidget>
 #include <QtMath>
-
+#include <QMessageBox>
 
 //#include <qwt_plot.h>
 //#include <qwt_plot_grid.h>
@@ -232,6 +232,25 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(powerStatusChanged(bool,int, int, char)));
     connect(&powerManager, SIGNAL(errorOccured(QString)),
             this, SLOT(handleErrorOccured(QString)));
+
+    QString termSeekRange = settings.value("termSeekRangeMM", 20).toString();
+    ui->lineEditTermSeekRangeMM->setText(termSeekRange);
+    on_lineEditTermSeekRangeMM_editingFinished();
+
+
+    ui->checkBoxLockSettings->setChecked(true);
+    connect(ui->checkBoxLockSettings, &QCheckBox::clicked,
+            [this](){
+                        if(ui->checkBoxLockSettings->isChecked() == false){
+                            QMessageBox::warning(this, tr("Motor-control"),
+                                                       tr("Изменение этих параметров может привести к физической поломке инсталляции.\n"
+                                                          "Вы уверены что хотите их изменить?"),
+                                                          QMessageBox::Ok);
+                        }
+                        lockSettings(ui->checkBoxLockSettings->isChecked());
+
+                    });
+    lockSettings(true);
 }
 
 void MainWindow::createPlot(QString name)
@@ -330,6 +349,10 @@ MainWindow::~MainWindow()
 
     settings.setValue("initOnStart", ui->checkBoxInitOnStart->isChecked());
     settings.setValue("driversStateControl", ui->checkBoxDriversStateControl->isChecked());
+
+    //int tsr = ui->lineEditTermSeekRangeMM->text().toInt();
+    settings.setValue("termSeekRangeMM", ui->lineEditTermSeekRangeMM->text().toInt());
+
 
     quint32 motorCount = ui->lineEditMotorCount->text().toInt();
     for(int i=0; i<motorCount; i++){
@@ -1345,6 +1368,28 @@ void MainWindow::on_lineEdit_MaxHeightImp_editingFinished()
 
 }
 
+void MainWindow::on_lineEditTermSeekRangeMM_editingFinished()
+{
+    int mmPerRot = ui->lineEdit_mmPerRot->text().toInt();
+    int termSeekRangeMM = ui->lineEditTermSeekRangeMM->text().toInt();
+    int impPerRot = ui->lineEdit_ImpPerRot->text().toInt();
+
+    float rot = termSeekRangeMM/(float)mmPerRot;
+    int termSeekRangeImps = rot*impPerRot;
+    //qDebug() << termSeekRangeImps;
+    int maxHeightMm = ui->lineEdit_maxHeightMM->text().toInt();
+    quint32 maxHeightImp = (maxHeightMm/mmPerRot)*impPerRot;
+
+    if(termSeekRangeImps > (maxHeightImp/2))
+        termSeekRangeImps = (maxHeightImp/2);
+    fpgaCtrl.setTermSeekRange(termSeekRangeImps);
+    QString msg;
+    msg.sprintf("term seek range set to %d st", termSeekRangeImps);
+    postMessage(msg);
+    //int termSeekRangeImp =
+}
+
+
 void MainWindow::on_lineEdit_mmPerRot_editingFinished()
 {
 
@@ -1837,5 +1882,18 @@ void MainWindow::powerStatusChanged(bool ACLinePresent, int BatteryLifePercent, 
 
     }
 
+}
+
+void MainWindow::lockSettings(bool bLock)
+{
+    bLock = !bLock;
+    ui->lineEditMotorCount->setEnabled(bLock);
+    ui->lineEdit_maxHeightMM->setEnabled(bLock);
+    ui->lineEdit_MaxHeightImp->setEnabled(bLock);
+    ui->lineEdit_vmax_mmsec->setEnabled(bLock);
+    ui->lineEdit_mmPerRot->setEnabled(bLock);
+    ui->checkBoxDirInverse->setEnabled(bLock);
+    ui->lineEdit_ImpPerRot->setEnabled(bLock);
+    ui->lineEditTermSeekRangeMM->setEnabled(bLock);
 }
 

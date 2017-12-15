@@ -13,7 +13,8 @@ FpgaControl::FpgaControl(QObject *parent) :
     recvInterval(-1),
     bTermState(MOTOR_CNT),
     maxDiv_debug(0), maxSteps_debug(0),
-    standState(standStateidle)
+    standState(standStateidle),
+    termSeekRange(8000)
 {
     emit standStateChanged(standState);
     for(int i=0; i<MOTOR_CNT; i++){
@@ -611,7 +612,8 @@ void FpgaControl::handleReadyRead()
                     mtState[id] = MT_INIT_GoUp;
                     int pos = getMotorAbsPosImp(id);
                     pos +=400;
-                    for(int k=0; k<20; k++){
+                    int termSeekRangeStpes = termSeekRange/400;
+                    for(int k=0; k<termSeekRangeStpes; k++){
                         addMotorCmd(id, pos, 100);
                         pos +=400;
                     }

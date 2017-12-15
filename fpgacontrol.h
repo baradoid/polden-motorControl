@@ -36,6 +36,7 @@ public:
     void setFpgaFreq(quint32);
     void setDirInverse(bool e){bDirInvers=e;}
     qint32 getMotorAbsPosImp(int i) { return motorAbsolutePosCur[i];}
+    void setTermSeekRange(quint32 tsr){termSeekRange = tsr;}
 
     void posReset();
 
@@ -80,6 +81,7 @@ private:
 //    void setBufferNotFree(qint32&, int);
 //    bool issTermEna(qint32, int);
     int maxDiv_debug, maxSteps_debug;
+    quint32 termSeekRange;
 
 signals:
     void termStateChanged(int, bool);

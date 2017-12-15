@@ -103,6 +103,8 @@ private slots:
 
     void on_pushButtonParking_clicked();
 
+    void on_lineEditTermSeekRangeMM_editingFinished();
+
 private:
     //quint32 motorCount;
 
@@ -194,6 +196,9 @@ private:
     LeadshineDebugPort lsDebugPort;
     //SonoffManager *sonoffManager;
     CPowerManager powerManager;
+
+
+    void lockSettings(bool);
 };
 
 
