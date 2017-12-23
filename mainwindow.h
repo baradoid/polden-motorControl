@@ -60,7 +60,6 @@ private slots:
     //void on_pushTestData_clicked();
 
     void on_tabWidget_tabBarClicked(int index);
-    void on_goToTerm_clicked();
     void on_pushMoveUp_clicked();
     void on_pushMoveDown_clicked();
 
@@ -99,7 +98,7 @@ private slots:
     void moveUp(int);
     void moveDown(int);
 
-    void powerStatusChanged(bool ACLinePresent, int BatteryLifePercent, int BatteryLifeTime, char BatteryFlag);
+    void handlePowerStatusChanged(bool ACLinePresent, int BatteryLifePercent, int BatteryLifeTime, char BatteryFlag);
 
     void on_pushButtonParking_clicked();
 

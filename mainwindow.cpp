@@ -229,7 +229,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     connect(&powerManager, SIGNAL(powerStatusChanged(bool,int, int, char)),
-            this, SLOT(powerStatusChanged(bool,int, int, char)));
+            this, SLOT(handlePowerStatusChanged(bool,int, int, char)));
     connect(&powerManager, SIGNAL(errorOccured(QString)),
             this, SLOT(handleErrorOccured(QString)));
 
@@ -955,10 +955,6 @@ void MainWindow::on_pushBUttonToIdle_clicked()
     fpgaCtrl.setMotorStateIdle();
 }
 
-void MainWindow::on_goToTerm_clicked()
-{
-    //fpgaCtrl.setMotorStateGoDown();
-}
 
 void MainWindow::on_pushButtonInitiate_clicked()
 {       
@@ -1856,7 +1852,7 @@ void MainWindow::postUDPMessage(QString str)
     ui->plainTextUDP->appendPlainText(showStr);
 }
 
-void MainWindow::powerStatusChanged(bool ACLinePresent, int BatteryLifePercent, int BatteryLifeTime, char BatteryFlag)
+void MainWindow::handlePowerStatusChanged(bool ACLinePresent, int BatteryLifePercent, int BatteryLifeTime, char BatteryFlag)
 {
     QString msg;
     msg.sprintf("ACLinePresent %s, BatteryLifePercent %x, BatteryFlag 0x%x",
@@ -1880,6 +1876,11 @@ void MainWindow::powerStatusChanged(bool ACLinePresent, int BatteryLifePercent, 
         ui->lineEditPowerState->setText(buttonText);
         ui->lineEditPowerState->setPalette(*paletteRed);
 
+    }
+
+    if(ACLinePresent == false){
+        if(fpgaCtrl.state() != standStateGoTerm)
+            on_pushButtonParking_clicked();
     }
 
 }
