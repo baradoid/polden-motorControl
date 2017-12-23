@@ -69,6 +69,7 @@ private:
     QTime exchInterval;
     QTimer timer, exchTimeoutTimer;
     TStandState standState;
+    bool bLastAllOnTerms;
 
 
     void parseFPGAMsg(QByteArray ba);
@@ -88,6 +89,7 @@ signals:
     void errorOccured(const QString&);
     void initFinished();
     void standStateChanged(TStandState);
+    void standParked();
 
 
 private slots:

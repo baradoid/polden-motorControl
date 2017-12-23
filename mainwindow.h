@@ -84,6 +84,7 @@ private slots:
     void fpgaCtrlTermState(int, bool);
     void handleErrorOccured(const QString&);
     void handleStandStateChanged(TStandState);
+    void handleStandParked();
 
     void on_checkBoxDirInverse_clicked();
 

@@ -129,6 +129,7 @@ public:
     QCheckBox *term10;
     QCheckBox *checkBoxDriversStateControl;
     QCheckBox *checkBoxLockSettings;
+    QCheckBox *checkBoxShutdownOnPowerLoss;
     QWidget *tabDebugPort;
     QWidget *widgetComPorts;
     QWidget *widget_27;
@@ -459,7 +460,7 @@ public:
         checkBoxInitOnStart->setGeometry(QRect(10, 90, 101, 17));
         groupBox_7 = new QGroupBox(tabSettings);
         groupBox_7->setObjectName(QStringLiteral("groupBox_7"));
-        groupBox_7->setGeometry(QRect(480, 70, 141, 111));
+        groupBox_7->setGeometry(QRect(480, 50, 141, 111));
         lineEditMinVal = new QLineEdit(groupBox_7);
         lineEditMinVal->setObjectName(QStringLiteral("lineEditMinVal"));
         lineEditMinVal->setGeometry(QRect(50, 20, 71, 20));
@@ -488,7 +489,7 @@ public:
         labelCompileTime->setGeometry(QRect(80, 20, 101, 16));
         groupBox = new QGroupBox(tabSettings);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(330, 200, 213, 121));
+        groupBox->setGeometry(QRect(330, 230, 213, 121));
         groupBox->setAlignment(Qt::AlignCenter);
         groupBox->setFlat(false);
         verticalLayout_4 = new QVBoxLayout(groupBox);
@@ -575,10 +576,13 @@ public:
 
         checkBoxDriversStateControl = new QCheckBox(tabSettings);
         checkBoxDriversStateControl->setObjectName(QStringLiteral("checkBoxDriversStateControl"));
-        checkBoxDriversStateControl->setGeometry(QRect(440, 30, 211, 17));
+        checkBoxDriversStateControl->setGeometry(QRect(250, 150, 211, 17));
         checkBoxLockSettings = new QCheckBox(tabSettings);
         checkBoxLockSettings->setObjectName(QStringLiteral("checkBoxLockSettings"));
-        checkBoxLockSettings->setGeometry(QRect(250, 150, 221, 17));
+        checkBoxLockSettings->setGeometry(QRect(250, 170, 221, 17));
+        checkBoxShutdownOnPowerLoss = new QCheckBox(tabSettings);
+        checkBoxShutdownOnPowerLoss->setObjectName(QStringLiteral("checkBoxShutdownOnPowerLoss"));
+        checkBoxShutdownOnPowerLoss->setGeometry(QRect(250, 190, 351, 17));
         tabWidget->addTab(tabSettings, QString());
         tabDebugPort = new QWidget();
         tabDebugPort->setObjectName(QStringLiteral("tabDebugPort"));
@@ -802,7 +806,8 @@ public:
         term9->setText(QApplication::translate("MainWindow", "9", Q_NULLPTR));
         term10->setText(QApplication::translate("MainWindow", "10", Q_NULLPTR));
         checkBoxDriversStateControl->setText(QApplication::translate("MainWindow", "\320\272\320\276\320\275\321\202\321\200\320\276\320\273\320\270\321\200\320\276\320\262\320\260\321\202\321\214 \320\276\321\210\320\270\320\261\320\272\320\270 \320\264\321\200\320\260\320\271\320\262\320\265\321\200\320\276\320\262", Q_NULLPTR));
-        checkBoxLockSettings->setText(QApplication::translate("MainWindow", "\320\221\320\273\320\276\320\272\320\270\321\200\320\276\320\262\320\272\320\260 \320\274\320\265\321\205\320\260\320\275\320\270\321\207\320\265\320\272\320\270\321\205 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\276\320\262", Q_NULLPTR));
+        checkBoxLockSettings->setText(QApplication::translate("MainWindow", "\320\261\320\273\320\276\320\272\320\270\321\200\320\276\320\262\320\272\320\260 \320\274\320\265\321\205\320\260\320\275\320\270\321\207\320\265\320\272\320\270\321\205 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\276\320\262", Q_NULLPTR));
+        checkBoxShutdownOnPowerLoss->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\272\320\273\321\216\321\207\320\260\321\202\321\214 \320\272\320\276\320\274\320\277\321\214\321\216\321\202\320\265\321\200 \320\277\320\276\321\201\320\273\320\265 \320\276\321\202\320\272\320\273\321\216\321\207\320\265\320\275\320\270\321\217 \320\277\320\270\321\202\320\260\320\275\320\270\321\217 \320\270 \320\277\320\260\321\200\320\272\320\276\320\262\320\272\320\270", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabSettings), QApplication::translate("MainWindow", "settings", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabDebugPort), QApplication::translate("MainWindow", "debugPort", Q_NULLPTR));
         pushButtonParking->setText(QApplication::translate("MainWindow", "\320\237\320\260\321\200\320\272\320\276\320\262\320\260\321\202\321\214", Q_NULLPTR));

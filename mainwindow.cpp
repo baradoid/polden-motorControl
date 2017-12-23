@@ -11,6 +11,7 @@
 #include <QWidget>
 #include <QtMath>
 #include <QMessageBox>
+#include <QProcess>
 
 //#include <qwt_plot.h>
 //#include <qwt_plot_grid.h>
@@ -81,6 +82,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->checkBoxDriversStateControl->setChecked(settings.value("driversStateControl", false).toBool());
 
+    ui->checkBoxShutdownOnPowerLoss->setChecked(settings.value("powerOffOnAcLossAndPark", true).toBool());
+
     ui->lineEditStandState->setText("unknown");
 
 
@@ -109,38 +112,6 @@ MainWindow::MainWindow(QWidget *parent) :
     createDebugSerialPortInterface();
     createMainInterface();
 
-//    timeStatSlider.append(ui->timeShift_0);
-//    timeStatSlider.append(ui->timeShift_1);
-//    timeStatSlider.append(ui->timeShift_2);
-//    timeStatSlider.append(ui->timeShift_3);
-//    timeStatSlider.append(ui->timeShift_4);
-//    timeStatSlider.append(ui->timeShift_5);
-//    timeStatSlider.append(ui->timeShift_6);
-//    timeStatSlider.append(ui->timeShift_7);
-//    timeStatSlider.append(ui->timeShift_8);
-//    timeStatSlider.append(ui->timeShift_9);
-
-//    timeStatLE.append(ui->lineEditTimeShift_0);
-//    timeStatLE.append(ui->lineEditTimeShift_1);
-//    timeStatLE.append(ui->lineEditTimeShift_2);
-//    timeStatLE.append(ui->lineEditTimeShift_3);
-//    timeStatLE.append(ui->lineEditTimeShift_4);
-//    timeStatLE.append(ui->lineEditTimeShift_5);
-//    timeStatLE.append(ui->lineEditTimeShift_6);
-//    timeStatLE.append(ui->lineEditTimeShift_7);
-//    timeStatLE.append(ui->lineEditTimeShift_8);
-//    timeStatLE.append(ui->lineEditTimeShift_9);
-
-//    absPosSlider.append(ui->SliderPos0);
-//    absPosSlider.append(ui->SliderPos1);
-//    absPosSlider.append(ui->SliderPos2);
-//    absPosSlider.append(ui->SliderPos3);
-//    absPosSlider.append(ui->SliderPos4);
-//    absPosSlider.append(ui->SliderPos5);
-//    absPosSlider.append(ui->SliderPos6);
-//    absPosSlider.append(ui->SliderPos7);
-//    absPosSlider.append(ui->SliderPos8);
-//    absPosSlider.append(ui->SliderPos9);
 
 //    for(int i=0; i<absPosSlider.length(); i++){
 //        QSlider *sl = absPosSlider[i];
@@ -174,7 +145,11 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(handleErrorOccured(const QString&)));
     connect(&fpgaCtrl, SIGNAL(standStateChanged(TStandState)),
             this, SLOT(handleStandStateChanged(TStandState)));
+    connect(&fpgaCtrl, SIGNAL(standParked()), this,
+            SLOT(handleStandParked()));
+
     handleStandStateChanged(fpgaCtrl.state());
+
 
 //    QString sonoffApSSID = settings.value("sonOffApSSID", "").toString();
 //    QString sonoffApKey = settings.value("sonOffApKey", "").toString();
@@ -353,6 +328,7 @@ MainWindow::~MainWindow()
 
     //int tsr = ui->lineEditTermSeekRangeMM->text().toInt();
     settings.setValue("termSeekRangeMM", ui->lineEditTermSeekRangeMM->text().toInt());
+    settings.setValue("powerOffOnAcLossAndPark", ui->checkBoxShutdownOnPowerLoss->isChecked());
 
 
     quint32 motorCount = ui->lineEditMotorCount->text().toInt();
@@ -1148,6 +1124,12 @@ void MainWindow::uiUpdateTimerSlot()
             ui->lineEditDriversState->setPalette(*paletteRed);
         }
 
+        if(isUdpServerOpen()){
+            ui->lineEditUdpState->setPalette(*paletteGreen);
+        }
+        else{
+            ui->lineEditUdpState->setPalette(*paletteRed);
+        }
     }
     else if(tabName == "timeStat"){
         //int curMsec = QTime::currentTime().msecsSinceStartOfDay();
@@ -1840,6 +1822,26 @@ void MainWindow::handleStandStateChanged(TStandState ss)
     ui->plainTextEdit->appendPlainText(msg);
 }
 
+void MainWindow::handleStandParked()
+{
+    if(powerManager.isACLinePresent() == true){
+        postMessage("parked");
+
+    }
+    else{
+
+        if(ui->checkBoxShutdownOnPowerLoss->isChecked()){
+            postMessage("parked and no AC. Shutdown.");
+            QProcess::startDetached("shutdown -s -f -t 00");
+        }
+        else{
+            postMessage("parked and no AC");
+        }
+
+    }
+
+}
+
 void MainWindow::postMessage(QString str)
 {
     QString showStr = QString("%1> %2").arg(QTime::currentTime().toString("hh:mm:ss:zzz")).arg(str);
@@ -1904,3 +1906,5 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     ui->checkBoxLockSettings->setChecked(true);
     lockSettings(true);
 }
+
+
