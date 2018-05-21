@@ -367,7 +367,7 @@ void MainWindow::handleErrorOccured(const QString &errStr)
     QString showStr = QString("%1> %2").arg(QTime::currentTime().toString("hh:mm:ss")).arg(errStr);
     ui->plainTextEdit->appendPlainText(showStr);
 
-    appendToLog(errStr);
+    appendToLog(showStr);
 
 
 }
