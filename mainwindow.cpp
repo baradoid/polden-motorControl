@@ -367,17 +367,8 @@ void MainWindow::handleErrorOccured(const QString &errStr)
     QString showStr = QString("%1> %2").arg(QTime::currentTime().toString("hh:mm:ss")).arg(errStr);
     ui->plainTextEdit->appendPlainText(showStr);
 
-    QString fName;
-    fName = "motorControl-log-";
+    appendToLog(errStr);
 
-    fName += QDate::currentDate().toString("yyyy-MM-dd");
-    fName += ".txt";
-    QFile f(fName);
-    if(f.open(QFile::Append)){
-        f.write(showStr.toLatin1());
-        f.write("\r\n");
-        f.close();
-    }
 
 }
 
@@ -1839,6 +1830,7 @@ void MainWindow::handleStandStateChanged(TStandState ss)
     }
     msg = QTime::currentTime().toString("hh:mm:ss")+"> " + msg;
     ui->plainTextEdit->appendPlainText(msg);
+    appendToLog(msg);
 }
 
 void MainWindow::handleStandParked()
@@ -1865,6 +1857,7 @@ void MainWindow::postMessage(QString str)
 {
     QString showStr = QString("%1> %2").arg(QTime::currentTime().toString("hh:mm:ss:zzz")).arg(str);
     ui->plainTextEdit->appendPlainText(showStr);
+    appendToLog(showStr);
 }
 
 void MainWindow::postUDPMessage(QString str)
@@ -1931,4 +1924,19 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 void MainWindow::on_checkBoxMoveErrCorrection_clicked()
 {
     fpgaCtrl.moveErrCorrectionEnable = ui->checkBoxMoveErrCorrection->isChecked();
+}
+
+void MainWindow::appendToLog(QString &str)
+{
+    QString fName;
+    fName = "motorControl-log-";
+
+    fName += QDate::currentDate().toString("yyyy-MM-dd");
+    fName += ".txt";
+    QFile f(fName);
+    if(f.open(QFile::Append)){
+        f.write(str.toLatin1());
+        f.write("\r\n");
+        f.close();
+    }
 }

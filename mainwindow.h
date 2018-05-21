@@ -203,6 +203,8 @@ private:
 
 
     void lockSettings(bool);
+
+    void appendToLog(QString&);
 };
 
 
