@@ -256,13 +256,21 @@ void FpgaControl::terminatorState(int i, bool bEna)
         if(bEna == true){
             //motorAbsolutePosCur[i] = 0;
             if(getCmdListLength(i) == 0){
+                if(moveErrCorrectionEnable && (motorAbsolutePosCur[i] != 0)){
+
+//                    QString msg;
+//                    msg.sprintf("%d: t! pos %d. zero it.", i, motorAbsolutePosCur[i]);
+//                    emit errorOccured(msg);
+
+//                    motorAbsolutePosCur[i] = 0;
+                }
                 //QString msg;
                 //msg.sprintf("%d: t! queue empty", i);
                 //emit errorOccured(msg);
             }
-            else{
+            else if(motorPosCmdData[i].first().dir == bDirInvers){ //only if move down
                 QString msg;
-                msg.sprintf("%d: t! cp:%d", i, motorAbsolutePosCur[i]);
+                msg.sprintf("%d: t! cp:%d cmdCnt: %d", i, motorAbsolutePosCur[i], getCmdListLength(i));
                 emit errorOccured(msg);
 //                    for(int k=0;
 //                        (k<motorPosCmdData[i].length()) && (motorPosCmdData[i].empty() == false);
@@ -757,7 +765,7 @@ void FpgaControl::handleReadyRead()
 void FpgaControl::handleExchTimeout()
 {
     recvInterval = -1;
-    QString msg("fpga exch timeout, no data");
+    QString msg("fpga exch timeout");
     emit errorOccured(msg);
     char c = 0xff;
     serial.write(&c, 1);

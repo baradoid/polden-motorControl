@@ -12,6 +12,8 @@
 #include <QtMath>
 #include <QMessageBox>
 #include <QProcess>
+#include <QFile>
+
 
 //#include <qwt_plot.h>
 //#include <qwt_plot_grid.h>
@@ -364,6 +366,19 @@ void MainWindow::handleErrorOccured(const QString &errStr)
 {
     QString showStr = QString("%1> %2").arg(QTime::currentTime().toString("hh:mm:ss")).arg(errStr);
     ui->plainTextEdit->appendPlainText(showStr);
+
+    QString fName;
+    fName = "motorControl-log-";
+
+    fName += QDate::currentDate().toString("yyyy-MM-dd");
+    fName += ".txt";
+    QFile f(fName);
+    if(f.open(QFile::Append)){
+        f.write(showStr.toLatin1());
+        f.write("\r\n");
+        f.close();
+    }
+
 }
 
 void MainWindow::dataProcess100msTimeOut()
