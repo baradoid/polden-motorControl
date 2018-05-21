@@ -15,7 +15,8 @@ FpgaControl::FpgaControl(QObject *parent) :
     maxDiv_debug(0), maxSteps_debug(0),
     standState(standStateidle),
     termSeekRange(8000),
-    bLastAllOnTerms(false)
+    bLastAllOnTerms(false),
+    moveErrCorrectionEnable(false)
 {
     emit standStateChanged(standState);
     for(int i=0; i<MOTOR_CNT; i++){
@@ -250,7 +251,50 @@ void FpgaControl::terminatorState(int i, bool bEna)
         emit(termStateChanged(i, bEna));
     }
 
-    if(mtState[i] == MT_INIT_GoDOWN){
+
+    if(mtState[i]  == MT_IDLE){
+        if(bEna == true){
+            //motorAbsolutePosCur[i] = 0;
+            if(getCmdListLength(i) == 0){
+                //QString msg;
+                //msg.sprintf("%d: t! queue empty", i);
+                //emit errorOccured(msg);
+            }
+            else{
+                QString msg;
+                msg.sprintf("%d: t! cp:%d", i, motorAbsolutePosCur[i]);
+                emit errorOccured(msg);
+//                    for(int k=0;
+//                        (k<motorPosCmdData[i].length()) && (motorPosCmdData[i].empty() == false);
+//                        k++){
+//                        DivPosDataStr ds = motorPosCmdData[i].first()
+//                    }
+
+
+
+                //int uI = 0;
+                while(motorPosCmdData[i].isEmpty() == false){
+                    DivPosDataStr &ds = motorPosCmdData[i].first();
+
+                    bool bMoveDown = (ds.dir == bDirInvers);//move down
+                    bool bMustDelete = moveErrCorrectionEnable && bMoveDown;
+                    msg.sprintf("%d:       -> d:%s fp:%d, st:%d %s", i,
+                                (!bMoveDown)? "up":"down",
+                                ds.finishPos, ds.steps, bMustDelete? "- del":"");
+                    emit errorOccured(msg);
+
+                    if(bMustDelete){
+                        motorPosCmdData[i].removeFirst();
+                        motorAbsolutePosCur[i] = 0;
+                    }
+                    if(!bMoveDown){  //if move up
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    else if(mtState[i] == MT_INIT_GoDOWN){
         if(bEna == true){
             motorAbsolutePosCur[i] = 0;
         }
@@ -864,7 +908,7 @@ void FpgaControl::addMotorCmd(int id, int newPosImp, int msecsForMove)
         if(id == 0){
             QString msg;
             msg.sprintf("delta 0, msecsForMove %d", msecsForMove );
-            emit errorOccured(msg);
+            //emit errorOccured(msg);
             //qDebug()<< "ms:" <<msecsForMove << "s:" <<delta << "d:" << qPrintable(QString("0x")+QString::number(ds.div, 16));
         }
         return;

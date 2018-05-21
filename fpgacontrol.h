@@ -56,6 +56,7 @@ public:
 
     void addRawCmd(int id, quint32 d, quint32 st, int dir);
 
+    bool moveErrCorrectionEnable;
 private:
     int motorCount;
     QQueue<DivPosDataStr> motorPosCmdData[MOTOR_CNT];
@@ -70,6 +71,8 @@ private:
     QTimer timer, exchTimeoutTimer;
     TStandState standState;
     bool bLastAllOnTerms;
+
+
 
 
     void parseFPGAMsg(QByteArray ba);

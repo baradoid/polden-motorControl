@@ -91,6 +91,9 @@ MainWindow::MainWindow(QWidget *parent) :
     fpgaFreq = FPGA_FREQ_25;
     fpgaCtrl.setFpgaFreq(fpgaFreq);
 
+    ui->checkBoxMoveErrCorrection->setChecked(settings.value("moveErrCorrection", false).toBool());
+    fpgaCtrl.moveErrCorrectionEnable = ui->checkBoxMoveErrCorrection->isChecked();
+
 //    if(fpgaFreq == FPGA_FREQ_24)
 //        ui->radioButtonFpgaFreq24->setChecked(true);
 //    else if(fpgaFreq == FPGA_FREQ_25)
@@ -330,6 +333,7 @@ MainWindow::~MainWindow()
     settings.setValue("termSeekRangeMM", ui->lineEditTermSeekRangeMM->text().toInt());
     settings.setValue("powerOffOnAcLossAndPark", ui->checkBoxShutdownOnPowerLoss->isChecked());
 
+    settings.setValue("moveErrCorrection", ui->checkBoxMoveErrCorrection->isChecked());
 
     quint32 motorCount = ui->lineEditMotorCount->text().toInt();
     for(int i=0; i<motorCount; i++){
@@ -1908,3 +1912,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 }
 
 
+
+void MainWindow::on_checkBoxMoveErrCorrection_clicked()
+{
+    fpgaCtrl.moveErrCorrectionEnable = ui->checkBoxMoveErrCorrection->isChecked();
+}
