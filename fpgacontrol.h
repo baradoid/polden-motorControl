@@ -15,6 +15,12 @@ typedef enum{
     standStateidle
 } TStandState;
 
+typedef struct{
+    uint16_t ctrl;
+    uint16_t div;
+    uint16_t stepCount;
+} TMotorMoveData;
+
 class FpgaControl : public QObject
 {
     Q_OBJECT

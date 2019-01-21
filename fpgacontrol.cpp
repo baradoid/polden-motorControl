@@ -402,12 +402,21 @@ void FpgaControl::sendDivPos(int mi, DivPosDataStr &ds)
         steps = MAX_STEPS;
     }
 
-    quint32 temp = 0;
-    temp = mi&0xf;
-    temp |= ((div&DIV_MASK)<<4);
-    temp |= (((quint64)steps&STEPS_MASK)<<19);
-    temp |= (((quint64)dir&0x1)<<31);
-    QByteArray ba = QByteArray::fromRawData((char*)&temp, sizeof(quint32));
+    TMotorMoveData moveDataStr;
+    moveDataStr.ctrl = ((dir&0x1)<<7)|(mi&0xf);
+    moveDataStr.div       = (div&DIV_MASK);
+    moveDataStr.stepCount = (steps&STEPS_MASK);
+
+    QByteArray ba = QByteArray::fromRawData((char*)&moveDataStr, sizeof(TMotorMoveData));
+
+    qDebug() << qPrintable("TMotorMoveData size:") << sizeof(moveDataStr)
+             << ba;
+//    quint32 temp = 0;
+//    temp = mi&0xf;
+//    temp |= ((div&DIV_MASK)<<4);
+//    temp |= (((quint64)steps&STEPS_MASK)<<19);
+//    temp |= (((quint64)dir&0x1)<<31);
+//    ba = QByteArray::fromRawData((char*)&temp, sizeof(quint32));
 
     //ba.resize(5);
 
@@ -420,12 +429,12 @@ void FpgaControl::sendDivPos(int mi, DivPosDataStr &ds)
     //    ba[3] = 0x00;
     //    ba[4] = 0x00;
 
-    //if(mi == 0){
+    if(mi == 0){
         //int msec = QTime::currentTime().msecsSinceStartOfDay();
         //qDebug("%d mi=%d st=%d", msec-lastMsec, mi, steps);
         //lastMsec = msec;
-        //qDebug("pos=%d steps=%d div=%d dir=%d", pos, steps, div, dir);
-    //}
+        qDebug("%d> steps=%d div=%d dir=%d", mi, steps, div, dir);
+    }
     quint64 dSend = serial.write(ba);
 
 //    if(dSend != 5){
@@ -942,7 +951,7 @@ void FpgaControl::addMotorCmd(int id, int newPosImp, int msecsForMove)
             motorPosCmdData[id].append(ds);
             if(id==0){
                 QString msg;
-                msg.sprintf("maxSteps err addPt st %d", ds.steps);
+                msg.sprintf("maxSteps err addPt st %d, div:%d", ds.steps, ds.div);
                 emit errorOccured(msg);
                 qDebug() << qPrintable(msg);
             }
