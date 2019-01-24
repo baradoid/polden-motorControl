@@ -403,7 +403,7 @@ void FpgaControl::sendDivPos(int mi, DivPosDataStr &ds)
     }
 
     TMotorMoveData moveDataStr;
-    moveDataStr.ctrl = ((dir&0x1)<<7)|(mi&0xf);
+    moveDataStr.ctrl = ((dir&0x1)<<15)|(mi&0xf);
     moveDataStr.div       = (div&DIV_MASK);
     moveDataStr.stepCount = (steps&STEPS_MASK);
 
