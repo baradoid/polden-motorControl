@@ -964,13 +964,13 @@ void MainWindow::on_pushMoveUp_clicked()
     for(int i=0; i<MOTOR_CNT; i++){
         if(fpgaCtrl.getCmdListLength(i) == 0){
             int pos = fpgaCtrl.getMotorAbsPosImp(i);  
-            pos +=10;
-            fpgaCtrl.addMotorCmd(i, pos, 100);
-//            pos +=400;
-//            for(int k=0; k<5; k++){
-//                fpgaCtrl.addMotorCmd(i, pos, 100);
-//                pos +=400;
-//            }
+            //pos +=10;
+            //fpgaCtrl.addMotorCmd(i, pos, 100);
+            pos +=400;
+            for(int k=0; k<5; k++){
+                fpgaCtrl.addMotorCmd(i, pos, 100);
+                pos +=400;
+            }
         }
         else{
             QString msg = QString("m %1 queue not empty").arg(i);
@@ -1189,7 +1189,7 @@ void MainWindow::udpServerOpen()
     if(udpSocket->state() != QAbstractSocket::BoundState){
         udpConnectionTime.restart();
         //if(udpSocket->bind(QHostAddress("192.168.0.104"), 8051) == true){
-        if(udpSocket->bind(QHostAddress::Any, 8051) == true){
+        if(udpSocket->bind(QHostAddress::Any, 8161) == true){
             //qDebug("UDP bind OK");
             ui->plainTextEdit->appendPlainText(QString("UDP bind on %1 OK").arg(udpSocket->localPort()));
         }
