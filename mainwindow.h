@@ -109,6 +109,8 @@ private slots:
 
     void on_checkBoxMoveErrCorrection_clicked();
 
+   // void on_lineEdit_ImpPerRot_textChanged(const QString &arg1);
+
 private:
     //quint32 motorCount;
 

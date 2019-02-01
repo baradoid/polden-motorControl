@@ -409,8 +409,8 @@ void FpgaControl::sendDivPos(int mi, DivPosDataStr &ds)
 
     QByteArray ba = QByteArray::fromRawData((char*)&moveDataStr, sizeof(TMotorMoveData));
 
-    qDebug() << qPrintable("TMotorMoveData size:") << sizeof(moveDataStr)
-             << ba;
+//    qDebug() << qPrintable("TMotorMoveData size:") << sizeof(moveDataStr)
+//             << ba;
 //    quint32 temp = 0;
 //    temp = mi&0xf;
 //    temp |= ((div&DIV_MASK)<<4);

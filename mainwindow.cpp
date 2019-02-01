@@ -65,6 +65,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lineEditMinVal->setText(QString::number(settings.value("minPosValue", 0).toInt()));
     ui->checkBoxDirInverse->setChecked(settings.value("dirInverse", false).toBool());
 
+    ui->lineEdit_ImpPerRot->setText(settings.value("impPerRot", 4000).toString());
+    connect(ui->lineEdit_ImpPerRot, &QLineEdit::editingFinished, [=](){
+        settings.setValue("impPerRot", ui->lineEdit_ImpPerRot->text().toInt());
+        //qDebug() << qPrintable(ui->lineEdit_ImpPerRot->text());
+
+        postMessage(QString("new imp per rotation: ") + ui->lineEdit_ImpPerRot->text());
+    });
+
     ui->checkBoxUdpInitEnable->setChecked(settings.value("udpInitEnable", false).toBool());
 
     ui->checkBoxInitOnStart->setChecked(settings.value("initOnStart", false).toBool());
@@ -1942,3 +1950,8 @@ void MainWindow::appendToLog(QString &str)
         f.close();
     }
 }
+
+//void MainWindow::on_lineEdit_ImpPerRot_textChanged(const QString &arg1)
+//{
+//    qDebug() << qPrintable(arg1);
+//}
