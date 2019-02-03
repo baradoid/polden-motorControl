@@ -309,7 +309,7 @@ void FpgaControl::terminatorState(int i, bool bEna)
         else{
             if(getCmdListLength(i) == 0){
                 int pos = getMotorAbsPosImp(i);
-                pos -=400;
+                pos -=100;
                 addMotorCmd(i, pos, 100);
             }
         }
@@ -673,11 +673,11 @@ void FpgaControl::handleReadyRead()
                 for(int id=0; id<motorCount; id++){
                     mtState[id] = MT_INIT_GoUp;
                     int pos = getMotorAbsPosImp(id);
-                    pos +=400;
-                    int termSeekRangeStpes = termSeekRange/400;
+                    pos +=100;
+                    int termSeekRangeStpes = termSeekRange/100;
                     for(int k=0; k<termSeekRangeStpes; k++){
                         addMotorCmd(id, pos, 100);
-                        pos +=400;
+                        pos +=100;
                     }
                 }
             }
