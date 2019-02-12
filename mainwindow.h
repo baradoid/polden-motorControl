@@ -207,6 +207,7 @@ private:
     void lockSettings(bool);
 
     void appendToLog(QString&);
+    void appendToUDPLog(QString &str);
 };
 
 

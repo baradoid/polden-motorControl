@@ -858,6 +858,7 @@ void FpgaControl::addRawCmd(int id, quint32 d, quint32 st, int dir)
 
 void FpgaControl::addMotorCmd(int id, int newPosImp, int msecsForMove)
 {
+    //msecsForMove +=5; //
     DivPosDataStr ds;
     ds.finishPos = newPosImp;
     quint32 curmSecs = QTime::currentTime().msecsSinceStartOfDay();
@@ -906,6 +907,8 @@ void FpgaControl::addMotorCmd(int id, int newPosImp, int msecsForMove)
             QString msg;
             msg.sprintf("new max div == 0x%x", maxDiv_debug);
             //emit errorOccured(msg);
+
+
             //qDebug() << qPrintable(msg);
         }
         if(ds.div > MAX_DIV){
@@ -914,7 +917,7 @@ void FpgaControl::addMotorCmd(int id, int newPosImp, int msecsForMove)
             dt = msecsForMove - nt;
             if(id==0){
                 QString msg;
-                msg.sprintf("maxSpeed err %x, msecsForMove %d, newTime %d, delta %d", ds.div, msecsForMove, nt, dt);
+                msg.sprintf("%d> maxSpeed err %x, msecsForMove %d, newTime %d, delta %d", id, ds.div, msecsForMove, nt, dt);
                 emit errorOccured(msg);
                 //qDebug() << qPrintable(msg);
             }

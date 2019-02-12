@@ -1874,6 +1874,7 @@ void MainWindow::postUDPMessage(QString str)
 {
     QString showStr = QString("%1> %2").arg(QTime::currentTime().toString("hh:mm:ss:zzz")).arg(str);
     ui->plainTextUDP->appendPlainText(showStr);
+    appendToUDPLog(showStr);
 }
 
 void MainWindow::handlePowerStatusChanged(bool ACLinePresent, int BatteryLifePercent, int BatteryLifeTime, char BatteryFlag)
@@ -1940,6 +1941,21 @@ void MainWindow::appendToLog(QString &str)
 {
     QString fName;
     fName = "motorControl-log-";
+
+    fName += QDate::currentDate().toString("yyyy-MM-dd");
+    fName += ".txt";
+    QFile f(fName);
+    if(f.open(QFile::Append)){
+        f.write(str.toLatin1());
+        f.write("\r\n");
+        f.close();
+    }
+}
+
+void MainWindow::appendToUDPLog(QString &str)
+{
+    QString fName;
+    fName = "motorControl-UDP-log-";
 
     fName += QDate::currentDate().toString("yyyy-MM-dd");
     fName += ".txt";
