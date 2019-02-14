@@ -105,6 +105,8 @@ public:
     QLabel *label_2;
     QLineEdit *lineEditUDPMaxVal;
     QCheckBox *checkBoxPrintUDPData;
+    QLabel *label_16;
+    QLineEdit *lineEditUDPDelay;
     QGroupBox *groupBox_8;
     QLabel *label_13;
     QLabel *labelCompileTime;
@@ -458,7 +460,7 @@ public:
         checkBoxInitOnStart->setGeometry(QRect(10, 90, 101, 17));
         groupBox_7 = new QGroupBox(tabSettings);
         groupBox_7->setObjectName(QString::fromUtf8("groupBox_7"));
-        groupBox_7->setGeometry(QRect(480, 50, 141, 111));
+        groupBox_7->setGeometry(QRect(510, 20, 141, 141));
         lineEditMinVal = new QLineEdit(groupBox_7);
         lineEditMinVal->setObjectName(QString::fromUtf8("lineEditMinVal"));
         lineEditMinVal->setGeometry(QRect(50, 20, 71, 20));
@@ -476,6 +478,13 @@ public:
         checkBoxPrintUDPData = new QCheckBox(groupBox_7);
         checkBoxPrintUDPData->setObjectName(QString::fromUtf8("checkBoxPrintUDPData"));
         checkBoxPrintUDPData->setGeometry(QRect(20, 80, 61, 20));
+        label_16 = new QLabel(groupBox_7);
+        label_16->setObjectName(QString::fromUtf8("label_16"));
+        label_16->setGeometry(QRect(10, 110, 51, 20));
+        lineEditUDPDelay = new QLineEdit(groupBox_7);
+        lineEditUDPDelay->setObjectName(QString::fromUtf8("lineEditUDPDelay"));
+        lineEditUDPDelay->setGeometry(QRect(70, 110, 51, 20));
+        lineEditUDPDelay->setAlignment(Qt::AlignCenter);
         groupBox_8 = new QGroupBox(tabSettings);
         groupBox_8->setObjectName(QString::fromUtf8("groupBox_8"));
         groupBox_8->setGeometry(QRect(20, 240, 151, 51));
@@ -736,7 +745,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -792,6 +801,7 @@ public:
         lineEditUDPMaxVal->setInputMask(QString());
         lineEditUDPMaxVal->setText(QApplication::translate("MainWindow", "1000", nullptr));
         checkBoxPrintUDPData->setText(QApplication::translate("MainWindow", "print", nullptr));
+        label_16->setText(QApplication::translate("MainWindow", "delay, \320\274\321\201:", nullptr));
         groupBox_8->setTitle(QApplication::translate("MainWindow", "About", nullptr));
         label_13->setText(QApplication::translate("MainWindow", "compile time:", nullptr));
         labelCompileTime->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));

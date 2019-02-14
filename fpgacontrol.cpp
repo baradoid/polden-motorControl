@@ -16,7 +16,8 @@ FpgaControl::FpgaControl(QObject *parent) :
     standState(standStateidle),
     termSeekRange(8000),
     bLastAllOnTerms(false),
-    moveErrCorrectionEnable(false)
+    moveErrCorrectionEnable(false),
+    udpCmdTimeoutBuffer(0)
 {
     emit standStateChanged(standState);
     for(int i=0; i<MOTOR_CNT; i++){
@@ -38,6 +39,9 @@ FpgaControl::FpgaControl(QObject *parent) :
             this, SLOT(handleExchTimeout()));
     exchTimeoutTimer.setSingleShot(false);
     exchTimeoutTimer.setInterval(100);
+
+    connect(&udpCmdBufferTimer, SIGNAL(timeout()), this, SLOT(handleUdpCmdCtrlTimeout()));
+    udpCmdBufferTimer.setSingleShot(true);
 }
 
 bool FpgaControl::openPort(QString portName)
@@ -983,4 +987,21 @@ void FpgaControl::clearCmdList()
     }
 }
 
+void FpgaControl::addUdpMotorString(TUdpCommandString tucs)
+{    
+    if((udpCmdBufferTimer.isActive() == false) &&
+       (udpCmdList.isEmpty() == true)){
+        udpCmdBufferTimer.start(udpCmdTimeoutBuffer);
+    }
+    udpCmdList.append(tucs);
+}
 
+void FpgaControl::handleUdpCmdCtrlTimeout()
+{
+    emit udpMsg(QString("start process udp command"));
+    udpCmdList.removeFirst();
+    if(udpCmdList.isEmpty() == false){
+        udpCmdBufferTimer.start(udpCmdTimeoutBuffer);
+    }
+
+}

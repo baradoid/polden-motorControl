@@ -176,6 +176,8 @@ private:
     void postMessage(QString str);
     void postUDPMessage(QString str);
 
+    void addUdpMotorString(QString& str);
+
     QList<QComboBox*> debPortCmbBxList;
     QList<QPushButton*> debPortpbList;
     //QList<QSerialPort*> debSerialPortList;
@@ -194,7 +196,8 @@ private:
     QList<bool*> motorRespRecvdList;
 
     quint32 lastUdpDatagrammRecvd;
-    QList<quint32> udpDgrmRecvIntervalList;
+    QList<quint32> udpDgrmRecvIntervalList;   
+    QString lastUdpCommandString;
 
     quint32 lastDebugShowTime;
 
@@ -202,6 +205,7 @@ private:
     LeadshineDebugPort lsDebugPort;
     //SonoffManager *sonoffManager;
     CPowerManager powerManager;
+
 
 
     void lockSettings(bool);

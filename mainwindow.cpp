@@ -14,6 +14,7 @@
 #include <QProcess>
 #include <QFile>
 
+#include <QValidator>
 
 //#include <qwt_plot.h>
 //#include <qwt_plot_grid.h>
@@ -104,6 +105,22 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->checkBoxMoveErrCorrection->setChecked(settings.value("moveErrCorrection", false).toBool());
     fpgaCtrl.moveErrCorrectionEnable = ui->checkBoxMoveErrCorrection->isChecked();
 
+
+    ui->lineEditUDPDelay->setValidator(new QIntValidator(0,10000));
+    quint32 udpCmdTimeoutBuffer = settings.value("udpDelay", 250).toInt();
+    ui->lineEditUDPDelay->setText(QString::number(udpCmdTimeoutBuffer));
+    fpgaCtrl.udpCmdTimeoutBuffer = udpCmdTimeoutBuffer;
+
+    connect(ui->lineEditUDPDelay, &QLineEdit::editingFinished, [=](){
+        QString udpDelay = ui->lineEditUDPDelay->text();
+        quint32 udpCmdTimeoutBuffer = udpDelay.toInt();
+        //udpCmdTimeoutBuffer
+        settings.setValue("udpDelay", udpDelay);
+        postMessage(QString("udp command process delay set to %1").arg(udpCmdTimeoutBuffer));
+        fpgaCtrl.udpCmdTimeoutBuffer = udpCmdTimeoutBuffer;
+    });
+
+
 //    if(fpgaFreq == FPGA_FREQ_24)
 //        ui->radioButtonFpgaFreq24->setChecked(true);
 //    else if(fpgaFreq == FPGA_FREQ_25)
@@ -162,6 +179,10 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(handleStandParked()));
 
     handleStandStateChanged(fpgaCtrl.state());
+
+    connect(&fpgaCtrl, &FpgaControl::udpMsg, [=](QString msg){
+        postUDPMessage(msg);
+    } );
 
 
 //    QString sonoffApSSID = settings.value("sonOffApSSID", "").toString();
@@ -559,7 +580,7 @@ void MainWindow::parseCmdMultiMotorStr(QString cmdMultiMotorStr, quint32 udpDgRe
         if( (i>9) || (i<0))
             postUDPMessage("!!! motInd error !!!");
         quint32 newPos = maxHeightImpVal * (convVal/(float)maxUDPVal);
-        qDebug("parseCmdMultiMotorStr %d> newpos: %d, udpDgRecvInterval:%d", i, newPos, udpDgRecvInterval);
+        //qDebug("parseCmdMultiMotorStr %d> newpos: %d, udpDgRecvInterval:%d", i, newPos, udpDgRecvInterval);
         fpgaCtrl.addMotorCmd(i, newPos, udpDgRecvInterval);
     }
 }
@@ -755,6 +776,16 @@ void MainWindow::handleReadPendingDatagrams()
             if(udpDgRecvInterval > 1000) udpDgRecvInterval=100;
 
             foreach (QString multiMotorStr, list1) {
+
+                if((multiMotorStr == lastUdpCommandString) ||
+                   (lastUdpCommandString.isEmpty() == true)){  //is first cmd in move trace?
+                    postUDPMessage("first");
+                    lastUdpCommandString = multiMotorStr;
+                    continue;
+                }
+                lastUdpCommandString = multiMotorStr;
+
+
                 QStringList motorList = multiMotorStr.split("S", QString::SkipEmptyParts);
                 QString outString;
                 foreach (QString cmdStr, motorList) {
@@ -763,12 +794,18 @@ void MainWindow::handleReadPendingDatagrams()
                 parseCmdMultiMotorStr(outString, udpDgRecvInterval);
                 //outString += "\r\n";
                 //outStrings << outString;
-
+                TUdpCommandString *udpCmdStr = new TUdpCommandString;
+                udpCmdStr->udpMotorControlStr = multiMotorStr;
+                udpCmdStr->recvInterval = udpDgRecvInterval;
+                fpgaCtrl.addUdpMotorString(*udpCmdStr);
             }
+
             gridLines++;
         }
     }
+    qDebug("%d readPendingDatagrams estimates %d", QTime::currentTime().msecsSinceStartOfDay()&0xfff, rpdEst.elapsed() );
 }
+
 
 
 void MainWindow::on_pushButton_refreshCom_clicked()

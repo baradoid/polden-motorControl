@@ -86,7 +86,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabMainStat">
        <attribute name="title">
@@ -718,10 +718,10 @@
        <widget class="QGroupBox" name="groupBox_7">
         <property name="geometry">
          <rect>
-          <x>480</x>
-          <y>50</y>
+          <x>510</x>
+          <y>20</y>
           <width>141</width>
-          <height>111</height>
+          <height>141</height>
          </rect>
         </property>
         <property name="title">
@@ -802,6 +802,32 @@
          </property>
          <property name="text">
           <string>print</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_16">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>110</y>
+           <width>51</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>delay, мс:</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEditUDPDelay">
+         <property name="geometry">
+          <rect>
+           <x>70</x>
+           <y>110</y>
+           <width>51</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </widget>

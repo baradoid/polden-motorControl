@@ -21,6 +21,11 @@ typedef struct{
     uint16_t stepCount;
 } TMotorMoveData;
 
+typedef struct{
+    QString udpMotorControlStr;
+    uint32_t recvInterval;
+} TUdpCommandString;
+
 class FpgaControl : public QObject
 {
     Q_OBJECT
@@ -55,6 +60,7 @@ public:
     quint32 bytesOnIter;
     qint32 recvInterval;
 //    void addMotorCmd(int, DivPosDataStr&);
+    quint32 udpCmdTimeoutBuffer;
 
     void clearCmdList();
     void addMotorCmd(int mn, int newPosImp, int msecsForMove);
@@ -63,6 +69,8 @@ public:
     void addRawCmd(int id, quint32 d, quint32 st, int dir);
 
     bool moveErrCorrectionEnable;
+    void addUdpMotorString(TUdpCommandString tucs);
+
 private:
     int motorCount;
     QQueue<DivPosDataStr> motorPosCmdData[MOTOR_CNT];
@@ -93,18 +101,26 @@ private:
     int maxDiv_debug, maxSteps_debug;
     quint32 termSeekRange;
 
+
+    QList<TUdpCommandString> udpCmdList;
+
+    QTimer udpCmdBufferTimer;
+
+
 signals:
     void termStateChanged(int, bool);
     void errorOccured(const QString&);
     void initFinished();
     void standStateChanged(TStandState);
     void standParked();
-
+    void udpMsg(const QString&);
 
 private slots:
     void handleReadyRead();
     void handleSerialDataWritten(qint64 bytes);
     void handleComPortErrorOccurred(QSerialPort::SerialPortError);
     void handleExchTimeout();
+
+    void handleUdpCmdCtrlTimeout();
 };
 
