@@ -772,6 +772,10 @@ void MainWindow::handleReadPendingDatagrams()
                     }
                     s/=20;
                     ui->statusBar->showMessage(QString("average UDP recv interval %1").arg(s), 5000);
+                    fpgaCtrl.udpCmdAveragePeriod = s;
+                }
+                else{
+                    fpgaCtrl.udpCmdAveragePeriod = udpDgRecvInterval;
                 }
             }
 
@@ -796,6 +800,7 @@ void MainWindow::handleReadPendingDatagrams()
                 }
                 lastUdpCommandString = multiMotorStr;
 
+                //fpgaCtrl.udpCmdStringList.append(multiMotorStr);
 
                 QStringList motorList = multiMotorStr.split("S", QString::SkipEmptyParts);
                 QString outString;
@@ -808,7 +813,7 @@ void MainWindow::handleReadPendingDatagrams()
                 TUdpCommandString *udpCmdStr = new TUdpCommandString;
                 udpCmdStr->udpMotorControlStr = multiMotorStr;
                 udpCmdStr->recvInterval = udpDgRecvInterval;
-                fpgaCtrl.addUdpMotorString(*udpCmdStr);
+                //fpgaCtrl.addUdpMotorString(*udpCmdStr);
             }
 
             gridLines++;
@@ -1828,12 +1833,13 @@ void MainWindow::handleDriverTimeout(int id)
 
 void MainWindow::moveUp(int id)
 {
+    quint32 stepLenImp = ui->lineEdit_StepLenImp->text().toInt();
     if(fpgaCtrl.getCmdListLength(id) == 0){
         int pos = fpgaCtrl.getMotorAbsPosImp(id);
-        pos +=400;
+        pos += stepLenImp;
         for(int k=0; k<5; k++){
             fpgaCtrl.addMotorCmd(id, pos, 100);
-            pos +=400;
+            pos += stepLenImp;
         }
     }
     else{
@@ -1844,13 +1850,14 @@ void MainWindow::moveUp(int id)
 
 void MainWindow::moveDown(int id)
 {
+    quint32 stepLenImp = ui->lineEdit_StepLenImp->text().toInt();
     if(fpgaCtrl.getCmdListLength(id) == 0){
         int pos = fpgaCtrl.getMotorAbsPosImp(id);
 
-        pos -=400;
+        pos -=stepLenImp;
         for(int k=0; k<5; k++){
             fpgaCtrl.addMotorCmd(id, pos, 100);
-            pos -=400;
+            pos -=stepLenImp;
 //                if(pos <=0){
 //           ui->plainTextEdit->appendPlainText(msg);
 //            pos = 0;

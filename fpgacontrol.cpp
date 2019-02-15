@@ -17,7 +17,8 @@ FpgaControl::FpgaControl(QObject *parent) :
     termSeekRange(8000),
     bLastAllOnTerms(false),
     moveErrCorrectionEnable(false),
-    udpCmdTimeoutBuffer(0)
+    udpCmdTimeoutBuffer(0),
+    udpCmdAveragePeriod(0)
 {
     emit standStateChanged(standState);
     for(int i=0; i<MOTOR_CNT; i++){
@@ -313,7 +314,7 @@ void FpgaControl::terminatorState(int i, bool bEna)
         else{
             if(getCmdListLength(i) == 0){
                 int pos = getMotorAbsPosImp(i);
-                pos -=100;
+                pos -=500;
                 addMotorCmd(i, pos, 100);
             }
         }
@@ -677,11 +678,11 @@ void FpgaControl::handleReadyRead()
                 for(int id=0; id<motorCount; id++){
                     mtState[id] = MT_INIT_GoUp;
                     int pos = getMotorAbsPosImp(id);
-                    pos +=100;
-                    int termSeekRangeStpes = termSeekRange/100;
+                    pos +=1000;
+                    int termSeekRangeStpes = termSeekRange/1000;
                     for(int k=0; k<termSeekRangeStpes; k++){
                         addMotorCmd(id, pos, 100);
-                        pos +=100;
+                        pos += 1000;
                     }
                 }
             }
@@ -998,10 +999,11 @@ void FpgaControl::addUdpMotorString(TUdpCommandString tucs)
 
 void FpgaControl::handleUdpCmdCtrlTimeout()
 {
-    emit udpMsg(QString("start process udp command"));
-    udpCmdList.removeFirst();
-    if(udpCmdList.isEmpty() == false){
-        udpCmdBufferTimer.start(udpCmdTimeoutBuffer);
+    //emit udpMsg(QString("process udp command"));
+    QString udpCmd = udpCmdStringList.takeFirst();
+    udpCmdStringList.removeFirst();
+    if(udpCmdStringList.isEmpty() == false){
+        udpCmdBufferTimer.start(udpCmdAveragePeriod);
     }
 
 }

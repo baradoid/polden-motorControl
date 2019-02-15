@@ -61,6 +61,8 @@ public:
     qint32 recvInterval;
 //    void addMotorCmd(int, DivPosDataStr&);
     quint32 udpCmdTimeoutBuffer;
+    quint32 udpCmdAveragePeriod;
+    QList<QString> udpCmdStringList;
 
     void clearCmdList();
     void addMotorCmd(int mn, int newPosImp, int msecsForMove);
