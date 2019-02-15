@@ -121,6 +121,17 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
 
+    ui->lineEdit_StepLenImp->setValidator(new QIntValidator(0,10000));
+    quint32 stepLenImp = settings.value("stepLenImp", 1000).toInt();
+    ui->lineEdit_StepLenImp->setText(QString::number(stepLenImp));
+    connect(ui->lineEdit_StepLenImp, &QLineEdit::editingFinished, [=](){
+        quint32 stepLenImp = ui->lineEdit_StepLenImp->text().toInt();
+        settings.setValue("stepLenImp", stepLenImp);
+        postMessage(QString("step len set to %1 impulses").arg(stepLenImp));
+    });
+
+
+
 //    if(fpgaFreq == FPGA_FREQ_24)
 //        ui->radioButtonFpgaFreq24->setChecked(true);
 //    else if(fpgaFreq == FPGA_FREQ_25)
@@ -1006,15 +1017,16 @@ void MainWindow::on_pushButtonParking_clicked()
 
 void MainWindow::on_pushMoveUp_clicked()
 {
+    quint32 stepLenImp = ui->lineEdit_StepLenImp->text().toInt();
     for(int i=0; i<MOTOR_CNT; i++){
         if(fpgaCtrl.getCmdListLength(i) == 0){
             int pos = fpgaCtrl.getMotorAbsPosImp(i);  
             //pos +=10;
             //fpgaCtrl.addMotorCmd(i, pos, 100);
-            pos +=400;
+            pos +=stepLenImp;
             for(int k=0; k<5; k++){
                 fpgaCtrl.addMotorCmd(i, pos, 100);
-                pos +=400;
+                pos +=stepLenImp;
             }
         }
         else{
@@ -1026,14 +1038,15 @@ void MainWindow::on_pushMoveUp_clicked()
 
 void MainWindow::on_pushMoveDown_clicked()
 {
+    quint32 stepLenImp = ui->lineEdit_StepLenImp->text().toInt();
     for(int i=0; i<MOTOR_CNT; i++){
         if(fpgaCtrl.getCmdListLength(i) == 0){
             int pos = fpgaCtrl.getMotorAbsPosImp(i);
 
-            pos -=400;
+            pos -= stepLenImp;
             for(int k=0; k<5; k++){
                 fpgaCtrl.addMotorCmd(i, pos, 100);
-                pos -=400;
+                pos -= stepLenImp;
 //                if(pos <=0){
 //                    pos = 0;
 //                    break;
@@ -1958,6 +1971,7 @@ void MainWindow::lockSettings(bool bLock)
     ui->checkBoxDirInverse->setEnabled(bLock);
     ui->lineEdit_ImpPerRot->setEnabled(bLock);
     ui->lineEditTermSeekRangeMM->setEnabled(bLock);
+    ui->lineEdit_StepLenImp->setEnabled(bLock);
 }
 
 

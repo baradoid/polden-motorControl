@@ -93,6 +93,8 @@ public:
     QLineEdit *lineEdit_vmax_mmsec;
     QLabel *label_15;
     QLineEdit *lineEditTermSeekRangeMM;
+    QLabel *label_17;
+    QLineEdit *lineEdit_StepLenImp;
     QGroupBox *groupBox_6;
     QLabel *label_3;
     QLineEdit *lineEditMotorCount;
@@ -395,7 +397,7 @@ public:
         tabSettings->setObjectName(QString::fromUtf8("tabSettings"));
         groupBox_5 = new QGroupBox(tabSettings);
         groupBox_5->setObjectName(QString::fromUtf8("groupBox_5"));
-        groupBox_5->setGeometry(QRect(20, 20, 211, 211));
+        groupBox_5->setGeometry(QRect(20, 20, 211, 231));
         label_8 = new QLabel(groupBox_5);
         label_8->setObjectName(QString::fromUtf8("label_8"));
         label_8->setGeometry(QRect(10, 20, 47, 13));
@@ -438,6 +440,13 @@ public:
         lineEditTermSeekRangeMM->setObjectName(QString::fromUtf8("lineEditTermSeekRangeMM"));
         lineEditTermSeekRangeMM->setGeometry(QRect(110, 170, 81, 20));
         lineEditTermSeekRangeMM->setAlignment(Qt::AlignCenter);
+        label_17 = new QLabel(groupBox_5);
+        label_17->setObjectName(QString::fromUtf8("label_17"));
+        label_17->setGeometry(QRect(10, 200, 91, 21));
+        lineEdit_StepLenImp = new QLineEdit(groupBox_5);
+        lineEdit_StepLenImp->setObjectName(QString::fromUtf8("lineEdit_StepLenImp"));
+        lineEdit_StepLenImp->setGeometry(QRect(110, 200, 81, 20));
+        lineEdit_StepLenImp->setAlignment(Qt::AlignCenter);
         groupBox_6 = new QGroupBox(tabSettings);
         groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
         groupBox_6->setGeometry(QRect(260, 20, 151, 121));
@@ -487,7 +496,7 @@ public:
         lineEditUDPDelay->setAlignment(Qt::AlignCenter);
         groupBox_8 = new QGroupBox(tabSettings);
         groupBox_8->setObjectName(QString::fromUtf8("groupBox_8"));
-        groupBox_8->setGeometry(QRect(20, 240, 151, 51));
+        groupBox_8->setGeometry(QRect(20, 270, 151, 51));
         label_13 = new QLabel(groupBox_8);
         label_13->setObjectName(QString::fromUtf8("label_13"));
         label_13->setGeometry(QRect(10, 20, 71, 16));
@@ -787,6 +796,7 @@ public:
 "\320\277\321\200\320\276\321\205\320\276\320\264\320\260, \320\274\320\274", nullptr));
         lineEditTermSeekRangeMM->setInputMask(QApplication::translate("MainWindow", "99", nullptr));
         lineEditTermSeekRangeMM->setText(QApplication::translate("MainWindow", "20", nullptr));
+        label_17->setText(QApplication::translate("MainWindow", "\320\224\320\273\320\270\320\275\320\260 \321\210\320\260\320\263\320\260, \320\270\320\274\320\277", nullptr));
         groupBox_6->setTitle(QApplication::translate("MainWindow", "\320\255\320\221\320\243", nullptr));
         label_3->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\273-\320\262\320\276 \320\274\320\276\321\202\320\276\321\200\320\276\320\262:", nullptr));
         lineEditMotorCount->setInputMask(QApplication::translate("MainWindow", "90", nullptr));
