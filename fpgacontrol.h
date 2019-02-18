@@ -71,7 +71,10 @@ public:
     void addRawCmd(int id, quint32 d, quint32 st, int dir);
 
     bool moveErrCorrectionEnable;
-    void addUdpMotorString(TUdpCommandString tucs);
+    void addUdpMotorString(QString udpCmdStr);
+
+    quint32 maxHeightImpVal;
+
 
 private:
     int motorCount;
@@ -90,12 +93,13 @@ private:
 
 
 
-
     void parseFPGAMsg(QByteArray ba);
     void freeToWrite(int i);
     void terminatorState(int i, bool bEna);
     void allFreeToWrite();
     void sendDivPos(int mi, DivPosDataStr &ds);
+
+    void parseCmdMultiMotorStr(QString cmdMultiMotorStr, quint32 udpDgRecvInterval);
 
 //    bool isBufferFree(qint32, int);
 //    void setBufferNotFree(qint32&, int);

@@ -18,7 +18,8 @@ FpgaControl::FpgaControl(QObject *parent) :
     bLastAllOnTerms(false),
     moveErrCorrectionEnable(false),
     udpCmdTimeoutBuffer(0),
-    udpCmdAveragePeriod(0)
+    udpCmdAveragePeriod(0),
+    maxHeightImpVal(0)
 {
     emit standStateChanged(standState);
     for(int i=0; i<MOTOR_CNT; i++){
@@ -988,22 +989,70 @@ void FpgaControl::clearCmdList()
     }
 }
 
-void FpgaControl::addUdpMotorString(TUdpCommandString tucs)
-{    
+//void FpgaControl::addUdpMotorString(TUdpCommandString tucs)
+//{
+//    if((udpCmdBufferTimer.isActive() == false) &&
+//       (udpCmdList.isEmpty() == true)){
+//        udpCmdBufferTimer.start(udpCmdTimeoutBuffer);
+//    }
+//    udpCmdList.append(tucs);
+//}
+
+void FpgaControl::addUdpMotorString(QString udpCmdStr)
+{
     if((udpCmdBufferTimer.isActive() == false) &&
-       (udpCmdList.isEmpty() == true)){
+       (udpCmdStringList.isEmpty() == true)){
         udpCmdBufferTimer.start(udpCmdTimeoutBuffer);
     }
-    udpCmdList.append(tucs);
+    udpCmdStringList.append(udpCmdStr);
 }
 
 void FpgaControl::handleUdpCmdCtrlTimeout()
 {
-    //emit udpMsg(QString("process udp command"));
-    QString udpCmd = udpCmdStringList.takeFirst();
-    udpCmdStringList.removeFirst();
-    if(udpCmdStringList.isEmpty() == false){
+    emit udpMsg(QString("udpCmd handler. cmd count: %1").arg(udpCmdStringList.length()));
+    if(udpCmdStringList.isEmpty() == false){        
+        QString udpCmd = udpCmdStringList.takeFirst();
         udpCmdBufferTimer.start(udpCmdAveragePeriod);
+        parseCmdMultiMotorStr(udpCmd, udpCmdAveragePeriod+5);
     }
 
+}
+
+
+void FpgaControl::parseCmdMultiMotorStr(QString cmdMultiMotorStr,
+                                        quint32 udpDgRecvInterval)
+{
+    //qDebug() << udpDgRecvInterval;
+
+    int maxUDPVal = 999;
+//    int maxHeightImpVal = ui->lineEdit_MaxHeightImp->text().toInt();
+//    int msecsForStep = 0;
+//    if(motorPosCmdData[0].isEmpty() == true){
+//        msecsForStep = QTime::currentTime().msecsSinceStartOfDay();
+//    }
+//    else{
+//        msecsForStep = motorPosCmdData[0].last().absMsec;
+//    }
+//    msecsForStep += 100;
+
+//last().absMsec + 100;
+    QStringList motorStrList =  cmdMultiMotorStr.split("p", QString::SkipEmptyParts);
+//    if(motorStrList.length() != MOTOR_CNT){
+//        ui->plainTextUDP->appendPlainText("motorStrList.length not equal MOTOR_CNT");
+//        return;
+//    }
+    //foreach (QString motorStr, motorStrList) {
+    for(int i=0; i<motorStrList.length(); i++){
+        QString vs = motorStrList[i];
+        quint32 convVal = vs.toInt();
+        if(convVal > maxUDPVal)
+            emit udpMsg("!!! max UDP val error !!!");
+        if( (i>9) || (i<0))
+            emit udpMsg("!!! motInd error !!!");
+        quint32 newPos = maxHeightImpVal * (convVal/(float)maxUDPVal);
+        //qDebug("parseCmdMultiMotorStr %d> newpos: %d, udpDgRecvInterval:%d", i, newPos, udpDgRecvInterval);
+        //emit udpMsg(QString("udpCmd %1 -> %2").arg(vs).arg(newPos));
+
+        addMotorCmd(i, newPos, udpDgRecvInterval);
+    }
 }

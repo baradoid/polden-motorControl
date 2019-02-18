@@ -91,6 +91,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     on_lineEdit_MaxHeightImp_editingFinished();
 
+
     ui->checkBoxDriversStateControl->setChecked(settings.value("driversStateControl", false).toBool());
 
     ui->checkBoxShutdownOnPowerLoss->setChecked(settings.value("powerOffOnAcLossAndPark", true).toBool());
@@ -272,6 +273,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
                     });
     lockSettings(true);
+    quint32 maxHeightImpVal = ui->lineEdit_MaxHeightImp->text().toInt();
+
+    fpgaCtrl.maxHeightImpVal = maxHeightImpVal;
 }
 
 void MainWindow::createPlot(QString name)
@@ -800,19 +804,18 @@ void MainWindow::handleReadPendingDatagrams()
                 }
                 lastUdpCommandString = multiMotorStr;
 
-                //fpgaCtrl.udpCmdStringList.append(multiMotorStr);
-
                 QStringList motorList = multiMotorStr.split("S", QString::SkipEmptyParts);
                 QString outString;
                 foreach (QString cmdStr, motorList) {
                     outString += cmdStr.mid(1, 4);
                 }
-                parseCmdMultiMotorStr(outString, udpDgRecvInterval);
+                fpgaCtrl.addUdpMotorString(outString);
+                //parseCmdMultiMotorStr(outString, udpDgRecvInterval);
                 //outString += "\r\n";
                 //outStrings << outString;
-                TUdpCommandString *udpCmdStr = new TUdpCommandString;
-                udpCmdStr->udpMotorControlStr = multiMotorStr;
-                udpCmdStr->recvInterval = udpDgRecvInterval;
+                //TUdpCommandString *udpCmdStr = new TUdpCommandString;
+               // udpCmdStr->udpMotorControlStr = multiMotorStr;
+               // udpCmdStr->recvInterval = udpDgRecvInterval;
                 //fpgaCtrl.addUdpMotorString(*udpCmdStr);
             }
 
@@ -1417,6 +1420,8 @@ void MainWindow::on_lineEdit_MaxHeightImp_editingFinished()
     int impPerRot = ui->lineEdit_ImpPerRot->text().toInt();
     int maxHeigtMM = (maxHeightImp/impPerRot)*mmPerRot;
     ui->lineEdit_maxHeightMM->setText(QString::number(maxHeigtMM));
+
+    fpgaCtrl.maxHeightImpVal = maxHeightImp;
 
 
 }
