@@ -1012,7 +1012,7 @@ void FpgaControl::handleUdpCmdCtrlTimeout()
     emit udpMsg(QString("udpCmd handler. cmd count: %1").arg(udpCmdStringList.length()));
     if(udpCmdStringList.isEmpty() == false){        
         QString udpCmd = udpCmdStringList.takeFirst();
-        udpCmdBufferTimer.start(udpCmdAveragePeriod);
+        udpCmdBufferTimer.start(udpCmdAveragePeriod-10);
         parseCmdMultiMotorStr(udpCmd, udpCmdAveragePeriod+5);
     }
 
