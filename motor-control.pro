@@ -34,9 +34,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     uartthread.cpp \
-    fpgacontrol.cpp \
-    leadshinedebugport.cpp \
+    fpgacontrol.cpp \    
     cpowermanager.cpp
+    #leadshinedebugport.cpp \
 
 HEADERS  += mainwindow.h \
     UartThread \
@@ -44,8 +44,8 @@ HEADERS  += mainwindow.h \
     uartthread.h \
     stand.h \
     fpgacontrol.h \
-    leadshinedebugport.h \
     cpowermanager.h
+    #leadshinedebugport.h \
 
 FORMS    += mainwindow.ui
 

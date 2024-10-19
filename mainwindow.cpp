@@ -47,8 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
     paletteGreen(NULL),
     lastUdpDatagrammRecvd(0),
     lastDebugShowTime(0),
-    fpgaCtrl(this),
-    lsDebugPort(this)
+    fpgaCtrl(this)/*,
+    lsDebugPort(this)*/
 {
     ui->setupUi(this);
 
@@ -209,29 +209,29 @@ MainWindow::MainWindow(QWidget *parent) :
     //sonoffManager->setAPserverParams(sonoffApSSID, sonoffApKey, sonoffServIp);
 
 
-    connect(&lsDebugPort, SIGNAL(driverOk(int)), this, SLOT(handleDriverOk(int)));
-    connect(&lsDebugPort, SIGNAL(driverErr(int, QString&)), this, SLOT(handleDriverErr(int, QString&)));
-    connect(&lsDebugPort, SIGNAL(driverTimeOut(int)), this, SLOT(handleDriverTimeout(int)));
+//    connect(&lsDebugPort, SIGNAL(driverOk(int)), this, SLOT(handleDriverOk(int)));
+//    connect(&lsDebugPort, SIGNAL(driverErr(int, QString&)), this, SLOT(handleDriverErr(int, QString&)));
+//    connect(&lsDebugPort, SIGNAL(driverTimeOut(int)), this, SLOT(handleDriverTimeout(int)));
 
-    lsDebugPort.setPortCount(motorCount);
+//    lsDebugPort.setPortCount(motorCount);
 
-    for(int id=0; id<motorCount; id++){
-        QString settingName = QString("debugComName%1").arg(id);
-        if(settings.contains(settingName)){
-            QString debPortName = settings.value(settingName, "").toString();
-            lsDebugPort.setPortName(id, debPortName);
+//    for(int id=0; id<motorCount; id++){
+//        QString settingName = QString("debugComName%1").arg(id);
+//        if(settings.contains(settingName)){
+//            QString debPortName = settings.value(settingName, "").toString();
+//            lsDebugPort.setPortName(id, debPortName);
 
-            QComboBox *cb = debPortCmbBxList[id];
-            for(int j=0; j<cb->count(); j++){
-                //qDebug() << qPrintable(cb->itemData(j).toString());
-                if(cb->itemData(j).toString() == debPortName){
-                    cb->setCurrentIndex(j);
-                    pushDebugComPortOpen(id);
-                    break;
-                }
-            }
-        }
-    }
+//            QComboBox *cb = debPortCmbBxList[id];
+//            for(int j=0; j<cb->count(); j++){
+//                //qDebug() << qPrintable(cb->itemData(j).toString());
+//                if(cb->itemData(j).toString() == debPortName){
+//                    cb->setCurrentIndex(j);
+//                    pushDebugComPortOpen(id);
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
     QString mainCom = settings.value("usbMain", "").toString();
     //qDebug() << qPrintable(mainCom);
@@ -381,10 +381,10 @@ MainWindow::~MainWindow()
 
     settings.setValue("moveErrCorrection", ui->checkBoxMoveErrCorrection->isChecked());
 
-    quint32 motorCount = ui->lineEditMotorCount->text().toInt();
-    for(int i=0; i<motorCount; i++){
-        settings.setValue(QString("debugComName%1").arg(i), lsDebugPort.portName(i));
-    }
+//    quint32 motorCount = ui->lineEditMotorCount->text().toInt();
+//    for(int i=0; i<motorCount; i++){
+//        settings.setValue(QString("debugComName%1").arg(i), lsDebugPort.portName(i));
+//    }
     delete ui;
 }
 
@@ -686,8 +686,8 @@ void MainWindow::handleReadPendingDatagrams()
             postUDPMessage("start cmd");
         }
         else if((dataStr == "init\r\n") || (dataStr == "init")){
-            if(ui->checkBoxDriversStateControl->isChecked() &&
-                    (lsDebugPort.isDriversOk() == false)){
+            if(ui->checkBoxDriversStateControl->isChecked() /*&&
+                    (lsDebugPort.isDriversOk() == false)*/){
                 postUDPMessage("drivers error. Skip pos dgrm.");
                 continue;
             }
@@ -730,9 +730,9 @@ void MainWindow::handleReadPendingDatagrams()
                 replStr = "err";
             }
             if(ui->checkBoxDriversStateControl->isChecked()){
-                if(lsDebugPort.isDriversOk() == false){
-                    replStr = "err";
-                }
+//                if(lsDebugPort.isDriversOk() == false){
+//                    replStr = "err";
+//                }
             }
 
             QStringList statReqParts = dataStr.split(',');
@@ -746,10 +746,10 @@ void MainWindow::handleReadPendingDatagrams()
         }
         else{
             if(ui->checkBoxDriversStateControl->isChecked()){
-                if(lsDebugPort.isDriversOk() == false){
-                    postUDPMessage("drivers error. Skip pos dgrm.");
-                    continue;
-                }
+//                if(lsDebugPort.isDriversOk() == false){
+//                    postUDPMessage("drivers error. Skip pos dgrm.");
+//                    continue;
+//                }
             }
             if((fpgaCtrl.state() == standStateInitiating)  ){
                 postUDPMessage("send pos msg while in initiating state! skip packet");
@@ -1188,14 +1188,14 @@ void MainWindow::uiUpdateTimerSlot()
         //qDebug() << connectionTime.elapsed() << connectionTime.toString("zzz");
         //connectionTime.elapsed()
         if(ui->checkBoxDriversStateControl->isChecked()){
-            if(lsDebugPort.isDriversOk()){
-                ui->lineEditDriversState->setText("ОК");
-                ui->lineEditDriversState->setPalette(*paletteGreen);
-            }
-            else{
-                ui->lineEditDriversState->setText("Ошибка");
-                ui->lineEditDriversState->setPalette(*paletteRed);
-            }
+//            if(lsDebugPort.isDriversOk()){
+//                ui->lineEditDriversState->setText("ОК");
+//                ui->lineEditDriversState->setPalette(*paletteGreen);
+//            }
+//            else{
+//                ui->lineEditDriversState->setText("Ошибка");
+//                ui->lineEditDriversState->setPalette(*paletteRed);
+//            }
         }
         else{
             ui->lineEditDriversState->setText("Не контролируется");
@@ -1673,40 +1673,40 @@ void MainWindow::pushDebugComPortOpen(int id)
 
 
     QString msg;
-     if(pb.text() == "open"){
-         if(lsDebugPort.isPortOpen(id) == false){
-             QString comName = cb.currentData().toString();
-             if(comName.length() > 0){
-                 //UartThread.requestToStart(comName);
-                 //sp.setPortName(comName);
-                 lsDebugPort.setPortName(id, comName);
-                 if (lsDebugPort.open(id) == false) {
-                     //qDebug("%s port open FAIL", qUtf8Printable(comName));
-                     //ui->plainTextEdit->appendPlainText(QString("%1 port open FAIL").arg(qUtf8Printable(comName)));
-                     msg = QString("debug port \"%1\" open fail").arg(comName);
-                     return;
-                 }
-                 else{
-                     cb.setDisabled(true);
-                     msg = QString("debug port \"%1\" open OK").arg(comName);
-     //                ui->plainTextEdit->appendPlainText(QString("%1 port opened").arg(qUtf8Printable(comName)));
-     //                connect(&serial, SIGNAL(readyRead()),
-     //                        this, SLOT(handleReadyRead()));
-     //                connect(&serial, SIGNAL(bytesWritten(qint64)),
-     //                        this, SLOT(handleSerialDataWritten(qint64)));
-                     pb.setText("close");
-                 }
-                 msg = QTime::currentTime().toString("hh:mm:ss")+"> " + msg;
-                 ui->plainTextEdit->appendPlainText(msg);
-             }
-         }
-     }
-     else{         
-         lsDebugPort.close(id);
-         ui->plainTextEdit->appendPlainText(QString("%1 closed").arg(lsDebugPort.portName(id)));
-         pb.setText("open");
-         cb.setDisabled(false);
-     }
+//     if(pb.text() == "open"){
+//         if(lsDebugPort.isPortOpen(id) == false){
+//             QString comName = cb.currentData().toString();
+//             if(comName.length() > 0){
+//                 //UartThread.requestToStart(comName);
+//                 //sp.setPortName(comName);
+//                 lsDebugPort.setPortName(id, comName);
+//                 if (lsDebugPort.open(id) == false) {
+//                     //qDebug("%s port open FAIL", qUtf8Printable(comName));
+//                     //ui->plainTextEdit->appendPlainText(QString("%1 port open FAIL").arg(qUtf8Printable(comName)));
+//                     msg = QString("debug port \"%1\" open fail").arg(comName);
+//                     return;
+//                 }
+//                 else{
+//                     cb.setDisabled(true);
+//                     msg = QString("debug port \"%1\" open OK").arg(comName);
+//     //                ui->plainTextEdit->appendPlainText(QString("%1 port opened").arg(qUtf8Printable(comName)));
+//     //                connect(&serial, SIGNAL(readyRead()),
+//     //                        this, SLOT(handleReadyRead()));
+//     //                connect(&serial, SIGNAL(bytesWritten(qint64)),
+//     //                        this, SLOT(handleSerialDataWritten(qint64)));
+//                     pb.setText("close");
+//                 }
+//                 msg = QTime::currentTime().toString("hh:mm:ss")+"> " + msg;
+//                 ui->plainTextEdit->appendPlainText(msg);
+//             }
+//         }
+//     }
+//     else{
+////         lsDebugPort.close(id);
+//         ui->plainTextEdit->appendPlainText(QString("%1 closed").arg(lsDebugPort.portName(id)));
+//         pb.setText("open");
+//         cb.setDisabled(false);
+//     }
 
 }
 
@@ -1719,11 +1719,11 @@ void MainWindow::comPortClose(int id)
 
     cb.setEnabled(true);
     pb.setText("open");
-    if(lsDebugPort.isPortOpen(id) == true){
-        ui->plainTextEdit->appendPlainText(QString("%1 closed").arg(lsDebugPort.portName(id)));
-        //sp.close();
-        lsDebugPort.close(id);
-    }
+//    if(lsDebugPort.isPortOpen(id) == true){
+//        ui->plainTextEdit->appendPlainText(QString("%1 closed").arg(lsDebugPort.portName(id)));
+//        //sp.close();
+//        lsDebugPort.close(id);
+//    }
     le.setPalette(*paletteGrey);
 }
 
@@ -1732,7 +1732,7 @@ void MainWindow::on_lineEditMotorCount_editingFinished()
     quint32 motorCount = ui->lineEditMotorCount->text().toInt();
     fpgaCtrl.setMotorCount(motorCount);
     settings.setValue("motorCount", motorCount);
-    lsDebugPort.setPortCount(motorCount);
+//    lsDebugPort.setPortCount(motorCount);
     ui->plainTextEdit->appendPlainText(QString("new motor count %1").arg(ui->lineEditMotorCount->text()));
     createDebugSerialPortInterface();
     createMainInterface();

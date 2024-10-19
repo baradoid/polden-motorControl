@@ -19,7 +19,7 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include "fpgacontrol.h"
-#include "leadshinedebugport.h"
+//#include "leadshinedebugport.h"
 //#include "sonoffmanager.h"
 
 //#include <qwt_plot_curve.h>
@@ -202,7 +202,7 @@ private:
     quint32 lastDebugShowTime;
 
     FpgaControl fpgaCtrl;
-    LeadshineDebugPort lsDebugPort;
+    //LeadshineDebugPort lsDebugPort;
     //SonoffManager *sonoffManager;
     CPowerManager powerManager;
 
